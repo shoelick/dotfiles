@@ -16,3 +16,15 @@ containsElement () {
     return 1
 }
 
+#
+# Debug
+# $1 Debug string
+# Prints the passed debug string if the $DEBUG is set
+#
+Debug () {
+
+    if [ ! -z ${DEBUG+notset} ] && [ $# -eq 1 ]; then 
+        echo $1
+    fi
+
+}
