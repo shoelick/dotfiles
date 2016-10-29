@@ -10,6 +10,14 @@ DEBUG=1
 echo "Shoelick Dotfiles"
 echo "Updated October '16"
 
+######################################
+# Argument parser
+# Supported commands include:
+# install, update
+######################################
+
+
+
 # Install / verify core for this platform
 SUPPORTED_OS="Darwin"
 THIS_OS=`uname`
@@ -69,6 +77,8 @@ fi
 
 # Package options
 # Provided packages:
+
+if 
 PACKAGES="zsh neovim"
 
 # Source each installation script.

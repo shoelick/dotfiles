@@ -35,7 +35,7 @@ Loosely based on [Serubin's Dotfiles](https://github.com/Serubin/dotfiles)
 
 Clone and run:
 
-    git clone --recursive https://github.com/owltheory/dotfiles.git && cd dotfiles && ./install.sh
+    git clone --recursive https://github.com/shoelick/dotfiles.git && cd dotfiles && ./install.sh
 
 This will automatically move the installation to `$HOME/.dotfiles`, backup any existing dotfiles setups into the new `$HOME/.dotfiles/dotfiles.back`, and symlink actual configuration dotfiles to their respective counterparts from this repository.
 
