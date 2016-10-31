@@ -23,8 +23,19 @@ containsElement () {
 #
 Debug () {
 
-    if [ ! -z ${DEBUG+notset} ] && [ $# -eq 1 ]; then 
-        echo $1
+    if [ ! -z ${DEBUG_OUTPUT+notset} ] ; then 
+        echo "DEBUG: $@"
     fi
+
+}
+
+#
+# Print helpful Usage message for user.
+# 
+PrintUsage() {
+
+    echo "Usage: shoefiles <subcommand> [target]"
+    echo "Supported subcommands: $SUPPORTED_CMDS"
+    echo "Supported targets: $SUPPORTED_TARGETS"
 
 }
