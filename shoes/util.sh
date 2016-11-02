@@ -46,7 +46,7 @@ PrintUsage() {
 #
 DetectPlatform() {
 
-    echo "Can you see me? $1"
+    Debug "Let's see whatcha got here..."
     RetVal=$ERROR_CODE_NONE
 
     # Get *nix distro
@@ -75,7 +75,8 @@ DetectPlatform() {
     done
 
     # Report error 
-    [[ ! -z ${PLATFORM+"shnikey!"} ]] && RetVal=$ERROR_CODE_FAILURE 
+    [[ ! -z ${PLATFORM+"shnikey!"} ]] && RetVal=$ERROR_CODE_FAILURE && \
+        echo "Welp. We don't have your back this time fam. OS not supported." 
 
     return $RetVal
 }

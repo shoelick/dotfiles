@@ -37,6 +37,7 @@ main() {
     Debug "Entering platform check." 
 
     DetectPlatform
+    RetVal=$?
     Debug "We are on $PLATFORM"
     
     return $RetVal
