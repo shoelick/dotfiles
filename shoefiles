@@ -12,26 +12,35 @@ main() {
     export DEBUG_OUTPUT=1
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
+    export PLATFORM=""
 
     source "$DOTFILES_REPO_DIR/shoes/util.sh"
     source "$DOTFILES_REPO_DIR/shoes/parse_args.sh"
     source "$DOTFILES_REPO_DIR/shoes/shoes.conf"
 
-    Debug "Debugging is ON! To turn off, set DEBUG_OUTPUT to 0 in shoefiles script."
+    # Debug warning will show if above var is set
+    Debug "Debugging is ON! To turn off, unset DEBUG_OUTPUT in shoefiles script."
 
     RetVal=0;
 
+    #
     # Check args
+    #
     Debug "Shoefiles received $@"
     AreArgsValid $@
     RetVal=$?
 
-    [ $RetVal ] && PrintUsage;
+    # Exit if invalid usage
+    [ $RetVal -gt $ERROR_CODE_NONE ] && PrintUsage && return $RetVal;
     
+    ## Detect Platform
+    Debug "Entering platform check." 
 
+    DetectPlatform
+    Debug "We are on $PLATFORM"
+    
     return $RetVal
 
-    ## Detect Platform
     #RetVal && DetectOs
     ##if [ -z ${
 
