@@ -134,19 +134,19 @@ ConfigureDotfilesDir() {
         Debug "Dotfiles directory exists and we're not in it."
         # Check if backup directory exists
         if [ -e "$BUPDIR" ]; then
-            echo -e "\e[5mWARNING!"
-            PROMPT="$DOTFILES_REPO_DIR/dotfiles.backup exists. Obliterate backup? " 
+            echo -e "!!! WARNING !!!"
+            PROMPT="$DOTFILES_REPO_DIR/dotfiles.backup exists. Obliterate backup directory? " 
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi
     fi
 
     # Exit if user told us to.
-    if [ $CONTINUE = 0 ]; then
-        echo "Empty/delete existing backup and try again." 
-        return $ERROR_CODE_FAIL
+    if [ $CONTINUE -eq 0 ]; then
+        echo "Delete existing backup and try again." 
+        return $ERROR_CODE_FAILURE
     # Make sure the backup dir doesn't exist
     else 
-        [ -d "$BUPDIR" ] && rm -v "$BUPDIR"
+         [ -d "$BUPDIR" ] && echo "Deleting $BUPDIR" && rm -r "$BUPDIR"
     fi
 
     cd "$HOME"
@@ -177,8 +177,10 @@ BoolPrompt() {
     DONE=0
     while [ ! $DONE = 1 ]; do
         read -p "$1 [Y/n]: " INPUT; # prompt
-        INPUT = ${INPUT,,} # make lowercase
-        [[ ($INPUT = "y" || $INPUT = "n") ]] && DONE=1 
+        #echo "we read $INPUT; try ${INPUT,,}"
+        INPUT=$(echo "$INPUT" | tr '[A-Z]' '[a-z]') # make lowercase
+        [[ ( $INPUT = "y" || $INPUT = "n" ) ]] && DONE=1 
     done;
-    echo [[ $INPUT = "y" ]]
+    [[ $INPUT = "n" ]] # logic's a bitch
+    echo $?
 }
