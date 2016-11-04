@@ -12,7 +12,11 @@ main() {
     export DEBUG_OUTPUT=1
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
-    export PLATFORM=""
+    export DOTFILES_BACKUP=
+    export SUBCMD=
+    export TARGET=
+    export PLATFORM=
+    export ISGROUP=
 
     source "$DOTFILES_REPO_DIR/shoes/util.sh"
     source "$DOTFILES_REPO_DIR/shoes/parse_args.sh"
@@ -33,67 +37,49 @@ main() {
     # Exit if invalid usage
     [ $RetVal -gt $ERROR_CODE_NONE ] && PrintUsage && return $RetVal;
     
-    ## Detect Platform
+    #
+    # Detect Platform
+    #
     Debug "Entering platform check." 
 
     DetectPlatform
     RetVal=$?
     Debug "We are on $PLATFORM"
-    
-    return $RetVal
+   
+    # Exit if invalid 
+    [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
 
-    #RetVal && DetectOs
-    ##if [ -z ${
 
-    ## Platform detection
+    #
+    # Move dotfiles to final location
+    #
+    ConfigureDotfilesDir
+    [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
 
+    Debug "Entering command selection majigger"
     ## Execute appropriate action 
+    case $SUBCMD in
+        "install")
+            Debug "Subcommand was $SUBCMD"
+            ;;
+        "update")
+            Debug "Subcommand was $SUBCMD"
+            ;;
+        "uninstall")
+            Debug "Subcommand was $SUBCMD"
+            
+            ;;
+        "test")
+            Debug "Subcommand was $SUBCMD"
+            ;;
+    esac
 
-    ## Install
-
-    ## Update
-
-    ## Test
-
-    ## Install / verify core for this platform
-    #SUPPORTED_OS="Darwin"
-    #THIS_OS=`uname`
-
-    #if ! containsElement "${THIS_OS}" "${SUPPORTED_OS[@]}"  ;
-    #then 
-    #    echo "$THIS_OS not supported."
-    #fi
-
-    ## Get directory of repo
-
-    ########################################
-    ## Configure dotfiles core setup
-    ## Provides definition for:
-    ## INSTALLER_CMD 
-    ########################################
+    return $RetVal
 
     #echo "Detected $THIS_OS. Lucky for you, $THIS_OS is supported."
     #source "$DOTFILES_REPO_DIR/core/${THIS_OS}.sh"
 
-    ### Set up .dotfiles directory
-    ## The dotfiles directory is this repository and NOT a link to something else.
-
-    ## @todo add warning if there already exists a backup in the dotfiles dir
-
-    ## If the repo is not the final location and the final location exists
-    #if [ "$DOTFILES_REPO_DIR" = "$DOTFILES_DIR" ] && [ -d "$DOTFILES_DIR"  ]; then
-    #    # Move existing dotfiles dir to a backup dir
-    #    # A link will not be moved
-    #    cd "$HOME"
-    #    mv -rv "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
-    #    cd "$HOME/.dotfiles"
-    #fi
-
-    ## Move repo to final destination
-    #mv -v "$DOTFILES_REPO_DIR" "$DOTFILES_DIR"
-    #export DOTFILES_BACKUP="$DOTFILES_DIR/dotfiles.backup"
-
-    ### Configure git
+        ### Configure git
 
     ## @todo set up .gitconfig?
 
