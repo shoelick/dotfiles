@@ -19,7 +19,6 @@ main() {
     export ISGROUP=
 
     source "$DOTFILES_REPO_DIR/shoes/util.sh"
-    source "$DOTFILES_REPO_DIR/shoes/parse_args.sh"
     source "$DOTFILES_REPO_DIR/shoes/shoes.conf"
 
     # Debug warning will show if above var is set
@@ -47,18 +46,35 @@ main() {
     Debug "We are on $PLATFORM"
     # Exit if invalid 
     [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
-
-    #
-    # Configure git
-    #
-
-    ## @todo set up .gitconfig
-
+    echo "Detected $PLATFORM. Lucky for you, $PLATFORM is supported."
 
     #
     # Setup / check core
     #
-    #source "$DOTFILES_REPO_DIR/core/${THIS_OS}.sh"
+    #source "$DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
+
+    #
+    # Configure git
+    #
+    GIT_EMAIL="$(git config --global user.email)"
+    Debug "Git email is: $GIT_EMAIL"
+    if [ -z "$GIT_EMAIL" ]; then
+        
+        Debug "git email not set"
+        EMAIL=$(EmailPrompt "Enter a valid email: ")
+        DEBUG "Email is: $EMAIL"
+        git config --global user.email $EMAIL
+    fi
+
+    GIT_USERNAME="$(git config --global user.name)"
+    Debug "Git name is: $GIT_USERNAME"
+    if [ -z "$GIT_USERNAME" ]; then
+        
+        Debug "git name not set"
+        read -P "Git user name: " INPUT
+        Debug "Using $INPUT for git user name"
+        git config --global user.name $INPUT
+    fi
 
     #
     # Move dotfiles to final location
@@ -66,6 +82,10 @@ main() {
     ConfigureDotfilesDir
     RetVal=$?
     [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
+
+    #
+    # Evaluate command
+    #
 
     Debug "Entering command selection majigger"
     ## Execute appropriate action 
@@ -87,7 +107,6 @@ main() {
 
     return $RetVal
 
-    #echo "Detected $THIS_OS. Lucky for you, $THIS_OS is supported."
 
     ## Perform update on dotfiles repo and submodules
     #if [ -d "${DOTFILES_DIR}/.git" ]; then

@@ -177,10 +177,26 @@ BoolPrompt() {
     DONE=0
     while [ ! $DONE = 1 ]; do
         read -p "$1 [Y/n]: " INPUT; # prompt
-        #echo "we read $INPUT; try ${INPUT,,}"
         INPUT=$(echo "$INPUT" | tr '[A-Z]' '[a-z]') # make lowercase
         [[ ( $INPUT = "y" || $INPUT = "n" ) ]] && DONE=1 
     done;
     [[ $INPUT = "n" ]] # logic's a bitch
     echo $?
+}
+
+#
+# EmailPrompt
+# Prompts the user for an email string
+# @param $1 takes a string prompt
+# 0 for matching string, 1 for unmatch
+#
+EmailPrompt() {
+    DONE=0
+    while [ ! $DONE = 1 ]; do
+        read -p "$1" INPUT; # prompt
+        if [[ "$INPUT" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$ ]]; then
+            DONE=1     
+        fi
+    done
+    echo $INPUT;
 }
