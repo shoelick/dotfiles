@@ -34,9 +34,10 @@ Debug () {
 # 
 PrintUsage() {
 
-    echo "Usage: shoefiles <subcommand> [target]"
+    echo "Usage: shoefiles <subcommand> <target>"
     echo "Supported subcommands: $SUPPORTED_CMDS"
-    echo "Supported targets: $SUPPORTED_TARGETS"
+    echo "Supported packages: $SUPPORTED_PKGS"
+    echo "Supported groups: $SUPPORTED_GROUPS"
 
 }
 
@@ -59,8 +60,7 @@ function AreArgsValid() {
     fi
    
     # Check for valid target
-    # First condition is Bash's annoying way of saying "if (var is not null)"
-    if [[ ! -z ${SUBCMD+"fuckme"} ]] && ! containsElement $TARGET $SUPPORTED_TARGETS ; then
+    if [[ ! -z ${SUBCMD} ]] && ! containsElement $TARGET $SUPPORTED_TARGETS ; then
         Debug "$TARGET is not in $SUPPORTED_TARGETS";
         echo "Invalid target."
         RetVal=$ERROR_CODE_INVALID_ARGS;
@@ -95,7 +95,6 @@ DetectPlatform() {
         DISTRO_RAW=$(uname)
     fi
 
-    echo $DISTRO_RAW
     # Parses out specific distro
     for OS in $SUPPORTED_OS; do 
         Debug "Checking for $OS..."
@@ -114,6 +113,7 @@ DetectPlatform() {
 # Set up and move .dotfiles directory
 # The back up directory does NOT exist by default.
 # Its presence indicates an existing backup.
+# @depends HOME
 # @depends DOTFILES_REPO_DIR Location of the repository
 # @depends DOTFILES_DIR Final destination
 # 
@@ -153,7 +153,7 @@ ConfigureDotfilesDir() {
     # If the repo is not the final location and the final location exists
     if  [ -d "$DOTFILES_DIR"  ]; then
         # Move existing dotfiles dir to a backup dir
-        # A link will not be moved
+        # A link will not be moved (@todo why did I write this?)
         mkdir -pv "$BUPDIR"
         mv -v "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
     fi
@@ -199,4 +199,55 @@ EmailPrompt() {
         fi
     done
     echo $INPUT;
+}
+
+#
+# Install
+# Installs the passed file or directory into the passed location, 
+# backing up the file already at the destination if it exists.
+# The passed destination is assumed to be prepended with $HOME
+# @param $1 Path to new source file to install
+# @param $2 Destination path, filename or target NOT included
+# @depends HOME
+# @depends DOTFILES_BACKUP Storage location for any existing dotfiles
+# @depends PKG_CONFIG Directory of configuration files to be linked from $HOME
+#
+# @note While reading what this function does, remember that a directory is 
+# also a type of file
+#
+InstallFiles() {
+
+    NEW_FILE_PATH="$1"
+    NEW_FILE_NAME=$(basename "$NEW_FILE_PATH")
+    DEST_PATH=$2 
+    BUPDIR=$DOTFILES_REPO_DIR/dotfiles.backup
+    CONTINUE=1
+
+    # Check if file exists at destination
+    if [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
+        # Check if file with this name already exists in backup
+        if [ -e "$BUPDIR/$NEW_FILE_NAME" ]; then
+            echo -e "!!! WARNING !!!"
+            PROMPT="$BUPDIR/$(basename $DEST_PATH) exists. Obliterate backup? " 
+            CONTINUE=$(BoolPrompt "$PROMPT")
+        fi 
+    
+        # Exit if user told us to
+        if [ $CONTINUE -eq 0 ]; then
+            echo "Delete existing backup or destination and try again." 
+            return $ERROR_CODE_FAILURE
+        else 
+            # Make sure the backup doesn't exist
+            [ -e "$BUPDIR/$NEW_FILE_NAME" ] && \ 
+                echo "Deleting $BUPDIR/$NEW_FILE_NAME" && \
+                rm -r "$BUPDIR/$NEW_FILE_NAME"
+        fi
+
+        # Finally, backup 
+        mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BUPDIR"
+    fi
+
+     # Install
+     ln -s "$DEST_PATH/$NEW_FILE_NAME" "$NEW_FILE_PATH"
+
 }

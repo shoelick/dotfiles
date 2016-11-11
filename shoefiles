@@ -40,7 +40,6 @@ main() {
     # Detect Platform
     #
     Debug "Entering platform check." 
-
     DetectPlatform
     RetVal=$?
     Debug "We are on $PLATFORM"
@@ -62,7 +61,7 @@ main() {
         
         Debug "git email not set"
         EMAIL=$(EmailPrompt "Enter a valid email: ")
-        DEBUG "Email is: $EMAIL"
+        Debug "Email is: $EMAIL"
         git config --global user.email $EMAIL
     fi
 
@@ -92,6 +91,20 @@ main() {
     case $SUBCMD in
         "install")
             Debug "Subcommand was $SUBCMD"
+            if containsElement $TARGET $SUPPORTED_GROUPS ; then
+                Debug "Preparing to install group $TARGET"
+                # Convert to all caps for variable name
+                TARGET=$(echo $TARGET | tr '[a-z]' '[A-Z]')
+                GROUPVAR="GROUP_$TARGET"
+                Debug "Final package group varname: $GROUPVAR"
+                for PKG in ${!GROUPVAR}; do
+                    echo $PKG
+                done;
+            elif containsElement $TARGET $SUPPORTED_TARGETS ; then
+                Debug "Preparing to install package $TARGET"
+            else 
+                echo "Target $TARGET not supported."
+            fi
             ;;
         "update")
             Debug "Subcommand was $SUBCMD"
