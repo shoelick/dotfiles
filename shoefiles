@@ -35,7 +35,7 @@ main() {
 
     # Exit if invalid usage
     [ $RetVal -gt $ERROR_CODE_NONE ] && PrintUsage && return $RetVal;
-    
+
     #
     # Detect Platform
     #
@@ -50,7 +50,7 @@ main() {
     #
     # Setup / check core
     #
-    #source "$DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
+    source "$DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
 
     #
     # Configure git
@@ -58,7 +58,7 @@ main() {
     GIT_EMAIL="$(git config --global user.email)"
     Debug "Git email is: $GIT_EMAIL"
     if [ -z "$GIT_EMAIL" ]; then
-        
+
         Debug "git email not set"
         EMAIL=$(EmailPrompt "Enter a valid email: ")
         Debug "Email is: $EMAIL"
@@ -68,7 +68,7 @@ main() {
     GIT_USERNAME="$(git config --global user.name)"
     Debug "Git name is: $GIT_USERNAME"
     if [ -z "$GIT_USERNAME" ]; then
-        
+
         Debug "git name not set"
         read -P "Git user name: " INPUT
         Debug "Using $INPUT for git user name"
@@ -98,22 +98,16 @@ main() {
                 GROUPVAR="GROUP_$TARGET"
                 Debug "Final package group varname: $GROUPVAR"
                 for PKG in ${!GROUPVAR}; do
-                    echo $PKG
+                    SetupPackage $PKG
                 done;
             elif containsElement $TARGET $SUPPORTED_TARGETS ; then
                 Debug "Preparing to install package $TARGET"
+                SetupPackage $TARGET
             else 
                 echo "Target $TARGET not supported."
             fi
             ;;
         "update")
-            Debug "Subcommand was $SUBCMD"
-            ;;
-        "uninstall")
-            Debug "Subcommand was $SUBCMD"
-            
-            ;;
-        "test")
             Debug "Subcommand was $SUBCMD"
             ;;
     esac
@@ -124,7 +118,7 @@ main() {
     ## Perform update on dotfiles repo and submodules
     #if [ -d "${DOTFILES_DIR}/.git" ]; then
     #    git --work-tree="${DOTFILES_DIR}" --git-dir="${DOTFILES_DIR}/.git" pull \
-    #        --recurse-submodules=yes origin master
+        #        --recurse-submodules=yes origin master
     #    git submodule init
     #    git submodule update
     #fi

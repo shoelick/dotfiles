@@ -10,17 +10,18 @@ which -s brew
 if [[ $? != 0 ]] ; then
     echo "Lemme get you a beer. Installing homebrew."
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else 
+    echo "I see homebrew's already installed. Lemme get you a refresher."
+    
+    # update brew
+    #brew update
+    #brew upgrade
 fi
 
-echo "I see homebrew's already installed. Lemme get you a refresher."
 
 # prepare brew
 #brew tap caskroom/cask
 #brew tap homebrew/versions
-
-# update brew
-brew update
-brew upgrade
 
 apps=(
     cmake

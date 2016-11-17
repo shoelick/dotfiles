@@ -202,7 +202,7 @@ EmailPrompt() {
 }
 
 #
-# Install
+# InstallFiles
 # Installs the passed file or directory into the passed location, 
 # backing up the file already at the destination if it exists.
 # The passed destination is assumed to be prepended with $HOME
@@ -217,12 +217,17 @@ EmailPrompt() {
 #
 InstallFiles() {
 
-    NEW_FILE_PATH="$1"
+    RETVAL=$ERROR_CODE_NONE
+    NEW_FILE_PATH="$1" # Location of original source file
     NEW_FILE_NAME=$(basename "$NEW_FILE_PATH")
     DEST_PATH=$2 
     BUPDIR=$DOTFILES_REPO_DIR/dotfiles.backup
     CONTINUE=1
 
+    Debug "Looking to install $NEW_FILE_PATH at $DEST_PATH"
+    Debug "File name itself is $NEW_FILE_NAME"
+
+    # @todo change to account for when destination exists and already is symlink to dotfiles
     # Check if file exists at destination
     if [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
         # Check if file with this name already exists in backup
@@ -231,23 +236,59 @@ InstallFiles() {
             PROMPT="$BUPDIR/$(basename $DEST_PATH) exists. Obliterate backup? " 
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi 
-    
-        # Exit if user told us to
-        if [ $CONTINUE -eq 0 ]; then
-            echo "Delete existing backup or destination and try again." 
-            return $ERROR_CODE_FAILURE
-        else 
-            # Make sure the backup doesn't exist
-            [ -e "$BUPDIR/$NEW_FILE_NAME" ] && \ 
-                echo "Deleting $BUPDIR/$NEW_FILE_NAME" && \
-                rm -r "$BUPDIR/$NEW_FILE_NAME"
+    fi 
+
+    # Exit if user told us to
+    if [ $CONTINUE -eq 0 ]; then
+        echo "Delete existing backup or destination and try again." 
+        RETVAL=$ERROR_CODE_FAILURE
+    else 
+        # Make sure the backup doesn't exist
+        Debug "Seeing if $BUPDIR/$NEW_FILE_NAME exists..." 
+        if [ -e "$BUPDIR/$NEW_FILE_NAME" ]; then 
+            echo "Deleting $BUPDIR/$NEW_FILE_NAME"
+            rm -rv "$BUPDIR/$NEW_FILE_NAME"
         fi
 
-        # Finally, backup 
+        # Finally, back up 
         mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BUPDIR"
+
+        # Install
+        ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME" 
     fi
 
-     # Install
-     ln -s "$DEST_PATH/$NEW_FILE_NAME" "$NEW_FILE_PATH"
-
+    return $RETVAL
 }
+
+#
+# SetupPackage 
+# Sources package scripts and runs their installation/configuration
+# @param $1 Name of package to install
+# @depends $DOTFILES_DIR Root directory of dotfiles repo
+# 
+SetupPackage () {
+
+    RETVAL=$ERROR_CODE_NONE
+    PKG_NAME=$1
+    PKG_CONFIG="${DOTFILES_DIR}/packages/${PKG_NAME}/config"
+    Debug "Using $PKG_CONFIG to install $PKG"
+
+    # Verify required script exists
+    PKG_SCRIPT="${PKG_CONFIG}/../${PKG_NAME}.sh"
+    if [ ! -f "$PKG_SCRIPT" ]; then
+        RETVAL=$ERROR_CODE_INVALID_ARGS
+        echo "Checked: $PKG_SCRIPT"
+        echo "Invalid package name provided."
+    else
+        # Source package install script
+        # All should include definitions for:
+        # Install, Configure
+        source "$PKG_SCRIPT"
+        Install && RETVAL=$?
+        [ $RETVAL == 0 ] && Configure && RETVAL=$?
+        unset -f Install Configure
+    fi
+
+    return $RETVAL
+}
+

@@ -14,7 +14,7 @@
 #
 Install () {
     echo "Setting you up with zsh..."
-    INSTALLER_CMD zsh    
+    $INSTALLER_CMD zsh    
     return $?
 } 
 
@@ -33,8 +33,8 @@ Configure () {
 
     echo "Bring in the colors and -- Oh my zsh!"
 
-    # Back up existing zsh install
-    [ -f "${HOME}/.zshrc" ] && mv -fv "${HOME}/.zshrc" ${DOTFILES_BACKUP}
+    # Install .zshrc
+    InstallFiles "$PKG_CONFIG/.zshrc" "$HOME"
 
     # Back up existing oh-my-zsh install
     if [ -d "${HOME}/.oh-my-zsh" ]; then
@@ -45,12 +45,9 @@ Configure () {
     # Install oh-my-zsh
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     
-    # Link to repo-provided config file
-    ln -sfv ${PKG_CONFIG}/config ~/.config/nvim
-
     # Perfom modification to agnoster theme
-    # Changes PS1 to use ~ for home and show up to 3 directories up from pwd
-    sed -i "s/blue black '%~'/blue black '%3~'/g "${HOME}"/.oh-my-zsh/themes/agnoster.zsh-theme"
+    # Changes PS1 to show up to 3 directories up from pwd
+    sed -i "s/blue black '%~'/blue black '%3~'/g" "${HOME}/.oh-my-zsh/themes/agnoster.zsh-theme"
 
     return $?
 }
