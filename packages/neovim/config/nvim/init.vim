@@ -14,6 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'itchyny/lightline.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -107,7 +108,7 @@ if filereadable(expand("~/.vim/colors/molokia.vim"))
     set t_ut=
 endif
 
-" Undo
+"" Undo
 if has('persistent_undo')
   silent !mkdir ~/.vim/undo > /dev/null 2>&1
   set undodir=~/.vim/undo
@@ -128,7 +129,7 @@ let g:lightline = {
 
 " TODO add more lightline stuff
 
-" use the previous window to
+"" use the previous window to
 
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -145,12 +146,12 @@ set wildignore+=.git,.hg,.bzr,.svn
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
-"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-"let g:ctrlp_custom_ignore = {
- " \ 'dir':  '\v[\/]\.(git|hg|svn)$',
- " \ 'file': '\v\.(exe|so|dll)$',
- " \ 'link': 'some_bad_symbolic_links',
- " \ }
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+ \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+ \ 'file': '\v\.(exe|so|dll)$',
+ \ 'link': 'some_bad_symbolic_links',
+ \ }
 
 augroup makefile
      autocmd!
