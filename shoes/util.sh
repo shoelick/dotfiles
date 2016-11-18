@@ -121,7 +121,7 @@ ConfigureDotfilesDir() {
 
     RETVAL=$ERROR_CODE_NONE
     CONTINUE=1
-    BUPDIR=$DOTFILES_REPO_DIR/dotfiles.backup
+    BACKUP_DIR=$DOTFILES_REPO_DIR/dotfiles.backup
 
     # If we are running from final destination, no worries.
     if [ "$DOTFILES_REPO_DIR" = "$DOTFILES_DIR" ]; then
@@ -133,7 +133,7 @@ ConfigureDotfilesDir() {
 
         Debug "Dotfiles directory exists and we're not in it."
         # Check if backup directory exists
-        if [ -e "$BUPDIR" ]; then
+        if [ -e "$BACKUP_DIR" ]; then
             echo -e "!!! WARNING !!!"
             PROMPT="$DOTFILES_REPO_DIR/dotfiles.backup exists. Obliterate backup directory? " 
             CONTINUE=$(BoolPrompt "$PROMPT")
@@ -146,7 +146,7 @@ ConfigureDotfilesDir() {
         return $ERROR_CODE_FAILURE
     # Make sure the backup dir doesn't exist
     else 
-         [ -d "$BUPDIR" ] && echo "Deleting $BUPDIR" && rm -r "$BUPDIR"
+         [ -d "$BACKUP_DIR" ] && echo "Deleting $BACKUP_DIR" && rm -r "$BACKUP_DIR"
     fi
 
     cd "$HOME"
@@ -154,7 +154,7 @@ ConfigureDotfilesDir() {
     if  [ -d "$DOTFILES_DIR"  ]; then
         # Move existing dotfiles dir to a backup dir
         # A link will not be moved (@todo why did I write this?)
-        mkdir -pv "$BUPDIR"
+        mkdir -pv "$BACKUP_DIR"
         mv -v "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
     fi
 
@@ -221,19 +221,25 @@ InstallFiles() {
     NEW_FILE_PATH="$1" # Location of original source file
     NEW_FILE_NAME=$(basename "$NEW_FILE_PATH")
     DEST_PATH=$2 
-    BUPDIR=$DOTFILES_REPO_DIR/dotfiles.backup
+    BACKUP_DIR="$DOTFILES_REPO_DIR/dotfiles.backup"
     CONTINUE=1
 
     Debug "Looking to install $NEW_FILE_PATH at $DEST_PATH"
     Debug "File name itself is $NEW_FILE_NAME"
 
-    # @todo change to account for when destination exists and already is symlink to dotfiles
+    # account for when destination exists and already is symlink to dotfiles
+    if [ -L "$DEST_PATH/$NEW_FILE_NAME" ]; then
+        LINKPATH=$(readlink "$DEST_PATH/$NEW_FILE_NAME")
+        if [[ $LINKPATH = $DOTFILES_DIR* ]]; then 
+            Debug "File is already installed."
+            return $ERROR_CODE_NONE
+        fi
     # Check if file exists at destination
-    if [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
+    elif [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
         # Check if file with this name already exists in backup
-        if [ -e "$BUPDIR/$NEW_FILE_NAME" ]; then
+        if [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
             echo -e "!!! WARNING !!!"
-            PROMPT="$BUPDIR/$(basename $DEST_PATH) exists. Obliterate backup? " 
+            PROMPT="$BACKUP_DIR/$NEW_FILE_NAME exists. Obliterate backup? " 
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi 
     fi 
@@ -244,14 +250,14 @@ InstallFiles() {
         RETVAL=$ERROR_CODE_FAILURE
     else 
         # Make sure the backup doesn't exist
-        Debug "Seeing if $BUPDIR/$NEW_FILE_NAME exists..." 
-        if [ -e "$BUPDIR/$NEW_FILE_NAME" ]; then 
-            echo "Deleting $BUPDIR/$NEW_FILE_NAME"
-            rm -rv "$BUPDIR/$NEW_FILE_NAME"
+        Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..." 
+        if [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then 
+            echo "Deleting $BACKUP_DIR/$NEW_FILE_NAME"
+            rm -rv "$BACKUP_DIR/$NEW_FILE_NAME"
         fi
 
         # Finally, back up 
-        mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BUPDIR"
+        mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BACKUP_DIR"
 
         # Install
         ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME" 

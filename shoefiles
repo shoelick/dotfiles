@@ -111,7 +111,8 @@ main() {
             Debug "Subcommand was $SUBCMD"
             ;;
     esac
-
+    
+    echo "Shoefiles complete. Sparing you from shoe puns."
     return $RetVal
 
 
