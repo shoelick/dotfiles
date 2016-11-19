@@ -24,7 +24,7 @@ Install () {
 # sourced in the home directory to source files configured in DOTFILES_DIR,
 # this function should configure any plugins.
 # @depends BACKUP_DIR Storage location for any existing dotfiles
-# @depends PKG_CONFIG Directory of configuration files to be linked from $HOME
+# @depends PKG_DIR Directory of configuration files to be linked from $HOME
 #
 # @param none
 # @return 0 on success, error code on fail
@@ -32,7 +32,7 @@ Install () {
 Configure () {
 
     # Install .zshrc
-    InstallFiles "$PKG_CONFIG/.zshrc" "$HOME"
+    InstallFiles "$PKG_DIR/.zshrc" "$HOME"
 
     # Install oh-my-zsh
     # Won't install if it's detects a present installation

@@ -25,7 +25,7 @@ Install () {
 # this function should configure any plugins.
 # @depends DOTFILES_DIR New configuration
 # @depends DOTFILES_BACKUP Storage location for any existing dotfiles
-# @depends PKG_CONFIG Directory of configuration files to be linked from $HOME
+# @depends PKG_DIR Directory of configuration files to be linked from $HOME
 # @param none
 # @return 0 on success, error code on fail
 #
@@ -35,26 +35,21 @@ Configure () {
     sleep 2
     echo "Vim is for losers. Have neovim."
 
-    BUNDLE_DIR=${HOME}/.config/nvim/bundle
-
-    # If .config/nvim exists and is not already a link
-    if [ -d "${HOME}/.config/nvim" ]; then
-        # Back it up
-        mv -fv ${HOME}/.config/nvim ${DOTFILES_BACKUP}/.config 
-    fi
+    # Install config file
+    mkdir -p "$HOME/.config/nvim"
+    InstallFiles "$PKG_DIR/nvim/init.vim" "$HOME/.config/nvim"
 
     # Link config files
-    mkdir -p ${HOME}/.config/nvim/
     ln -sfv "${PKG_CONFIG}/config/nvim/vundle.vim" ~/.config/nvim/
     ln -sfv "${PKG_CONFIG}/config/nvim/init.vim" ~/.config/nvim/
 
-    # Install Vundle
+    # Install and setup Vundle
+    BUNDLE_DIR=${HOME}/.config/nvim/bundle
     mkdir -p "${BUNDLE_DIR}"
     git clone https://github.com/VundleVim/Vundle.vim.git "${BUNDLE_DIR}/vundle" 
-
-    # Set up vundle
     nvim +PluginInstall +qall 
 
+    # Build YouCompleteMe
     cd "${BUNDLE_DIR}/YouCompleteMe"
     ./install.py
 

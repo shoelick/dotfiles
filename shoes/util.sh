@@ -210,7 +210,7 @@ EmailPrompt() {
 # @param $2 Destination path, filename or target NOT included
 # @depends HOME
 # @depends DOTFILES_BACKUP Storage location for any existing dotfiles
-# @depends PKG_CONFIG Directory of configuration files to be linked from $HOME
+# @depends PKG_DIR Directory of configuration files to be linked from $HOME
 #
 # @note While reading what this function does, remember that a directory is 
 # also a type of file
@@ -253,11 +253,11 @@ InstallFiles() {
         Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..." 
         if [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then 
             echo "Deleting $BACKUP_DIR/$NEW_FILE_NAME"
-            rm -rv "$BACKUP_DIR/$NEW_FILE_NAME"
+            rm -r "$BACKUP_DIR/$NEW_FILE_NAME"
         fi
 
         # Finally, back up 
-        mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BACKUP_DIR"
+        [ -e "$DEST_PATH/$NEW_FILE_NAME" ] && mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BACKUP_DIR"
 
         # Install
         ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME" 
@@ -276,11 +276,11 @@ SetupPackage () {
 
     RETVAL=$ERROR_CODE_NONE
     PKG_NAME=$1
-    PKG_CONFIG="${DOTFILES_DIR}/packages/${PKG_NAME}/config"
-    Debug "Using $PKG_CONFIG to install $PKG"
+    PKG_DIR="${DOTFILES_DIR}/packages/${PKG_NAME}"
+    Debug "Using $PKG_DIR to install $PKG"
 
     # Verify required script exists
-    PKG_SCRIPT="${PKG_CONFIG}/../${PKG_NAME}.sh"
+    PKG_SCRIPT="${PKG_DIR}/${PKG_NAME}.sh"
     if [ ! -f "$PKG_SCRIPT" ]; then
         RETVAL=$ERROR_CODE_INVALID_ARGS
         echo "Checked: $PKG_SCRIPT"

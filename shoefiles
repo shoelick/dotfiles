@@ -124,33 +124,6 @@ main() {
     #    git submodule update
     #fi
 
-    ########################################
-    ## Perform dotfiles toolbox setup
-    ########################################
-
-    ## Package options
-    ## Provided packages:
-
-    #if 
-    #PACKAGES="zsh neovim"
-
-    ## Source each installation script.
-    #for PKG in $PACKAGES; do 
-    #    PKG_CONFIG="${DOTFILES_DIR}/packages/${PKG}/config"
-    #    source "./packages/${PKG}/${PKG}.sh"
-    #    # Source package install script
-    #    # All should include definitions for:
-    #    # Install, Configure
-    #
-    #    Install
-    #    if [[ $? -eq 0 ]]; then
-    #        Configure
-    #    else 
-    #        echo "ERROR: Installation of $PKG failed."
-    #    fi
-    #    unset -f Install Configure
-    #done    
-
 } 
 
 main $@
