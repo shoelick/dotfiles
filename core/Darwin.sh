@@ -14,29 +14,16 @@ else
     echo "I see homebrew's already installed. Lemme get you a refresher."
     
     # update brew
-    #brew update
-    #brew upgrade
+    brew update
+    brew upgrade
 fi
-
 
 # prepare brew
 #brew tap caskroom/cask
 #brew tap homebrew/versions
 
-apps=(
-    cmake
-    git
-    "gnu-sed --default-names"
-    "grep --with-default-names"
-    htop-osx
-    perl
-    python
-    wget
-)
-
 # Install all of the listed packages 
-brew install ${apps[@]}
-unset apps
+brew install ${COMMON_CORE_PKGS[@]}
 
 # Provide installer cmd
 export INSTALLER_CMD="brew install" 

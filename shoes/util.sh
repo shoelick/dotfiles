@@ -99,7 +99,7 @@ DetectPlatform() {
     for OS in $SUPPORTED_OS; do 
         Debug "Checking for $OS..."
         PLATFORM=$(echo $DISTRO_RAW | grep -o "$OS")
-        [[ ! -z ${PLATFORM+"hehehe"} ]] && break;
+        [[ ! -z ${PLATFORM} ]] && break;
     done
 
     # Report error 
