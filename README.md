@@ -51,4 +51,4 @@ This setup creates a clean bash envirnment with several other applications. Belo
 * NerdTree
 * Presistent undo
 * Various completion packages
-
+-->
