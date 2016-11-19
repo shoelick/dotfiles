@@ -7,6 +7,7 @@
 " the command :BundleInstall from within vim or directly invoking it from the
 " command line with the following syntax:
 " vim --noplugin -u vim/vundles.vim -N "+set hidden" "+syntax on" +BundleClean! +BundleInstall +qall
+
 " Filetype off is required by vundle
 filetype off
 

@@ -227,37 +227,66 @@ InstallFiles() {
     Debug "Looking to install $NEW_FILE_PATH at $DEST_PATH"
     Debug "File name itself is $NEW_FILE_NAME"
 
-    # account for when destination exists and already is symlink to dotfiles
-    if [ -L "$DEST_PATH/$NEW_FILE_NAME" ]; then
-        LINKPATH=$(readlink "$DEST_PATH/$NEW_FILE_NAME")
-        if [[ $LINKPATH = $DOTFILES_DIR* ]]; then 
-            Debug "File is already installed."
-            return $ERROR_CODE_NONE
-        fi
+
     # Check if file exists at destination
-    elif [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
+    if [ -e "$DEST_PATH/$NEW_FILE_NAME" -o -L "$DEST_PATH/$NEW_FILE_NAME" ]; 
+    then
+    
+        # account for when destination exists and already is symlink to dotfiles
+        if [ -L "$DEST_PATH/$NEW_FILE_NAME" ]; then
+            Debug "Link exists at $DEST_PATH/$NEW_FILE_NAME..."
+            LINKPATH=$(readlink "$DEST_PATH/$NEW_FILE_NAME")
+            if [ $LINKPATH = $NEW_FILE_PATH ]; then 
+                Debug "File is already installed."
+                CONTINUE=0
+            fi
+
+            # Account for a broken link
+            # Because only I would create a scenario in which this check is
+            # necssary
+            if [ ! -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
+                echo "WARNING: broken symlink exists at destination $DEST_PATH/$NEW_FILE_NAME"
+                PROMPT="Can I delete it? " 
+                DELETE_BROKEN_LINK=$(BoolPrompt "$PROMPT")
+                if [ $DELETE_BROKEN_LINK -eq 1 ]; then
+                    echo "Deleting broken link: $DEST_PATH/$NEW_FILE_NAME"
+                    rm $DEST_PATH/$NEW_FILE_NAME 
+                else 
+                    echo "Stopping neovim install. Please fix/remove broken link and try again."
+                    CONTINUE=0
+                fi
+            fi
+        fi 
+
         # Check if file with this name already exists in backup
-        if [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
+        if [ $CONTINUE -eq 1 ] && [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
             echo -e "!!! WARNING !!!"
             PROMPT="$BACKUP_DIR/$NEW_FILE_NAME exists. Obliterate backup? " 
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi 
+
+        # Delete backup if directed and necessary
+        Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..." 
+        if  [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
+            if [ $CONTINUE -eq 1 ]; then
+                echo "Deleting $BACKUP_DIR/$NEW_FILE_NAME"
+                rm -r "$BACKUP_DIR/$NEW_FILE_NAME"
+            else 
+                echo "Take care of existing backup or destination and try again." 
+                RETVAL=$ERROR_CODE_FAILURE
+            fi
+        fi
     fi 
 
     # Exit if user told us to
-    if [ $CONTINUE -eq 0 ]; then
-        echo "Delete existing backup or destination and try again." 
-        RETVAL=$ERROR_CODE_FAILURE
-    else 
-        # Make sure the backup doesn't exist
-        Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..." 
-        if [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then 
-            echo "Deleting $BACKUP_DIR/$NEW_FILE_NAME"
-            rm -r "$BACKUP_DIR/$NEW_FILE_NAME"
-        fi
+    if [ $CONTINUE -eq 1 ]; then
 
-        # Finally, back up 
-        [ -e "$DEST_PATH/$NEW_FILE_NAME" ] && mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BACKUP_DIR"
+        # Back up 
+        Debug "Seeing if $DEST_PATH/$NEW_FILE_NAME exists..."
+        if [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
+            Debug "Moving existing $DEST_PATH/$NEW_FILE_NAME to $BACKUP_DIR"
+            mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BACKUP_DIR"
+        fi
 
         # Install
         ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME" 

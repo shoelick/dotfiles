@@ -13,7 +13,7 @@
 #
 Install () {
 
-    INSTALLER_CMD neovim
+    $INSTALLER_CMD neovim
 
     return $?
 } 
@@ -37,21 +37,26 @@ Configure () {
 
     # Install config file
     mkdir -p "$HOME/.config/nvim"
-    InstallFiles "$PKG_DIR/nvim/init.vim" "$HOME/.config/nvim"
 
     # Link config files
-    ln -sfv "${PKG_CONFIG}/config/nvim/vundle.vim" ~/.config/nvim/
-    ln -sfv "${PKG_CONFIG}/config/nvim/init.vim" ~/.config/nvim/
+    InstallFiles "${PKG_DIR}/vundle.vim" ${HOME}/.config/nvim/
+    InstallFiles "${PKG_DIR}/init.vim" ${HOME}/.config/nvim/
 
     # Install and setup Vundle
     BUNDLE_DIR=${HOME}/.config/nvim/bundle
-    mkdir -p "${BUNDLE_DIR}"
-    git clone https://github.com/VundleVim/Vundle.vim.git "${BUNDLE_DIR}/vundle" 
-    nvim +PluginInstall +qall 
+    if [ ! -e "$BUNDLE_DIR" ]; then
+        mkdir -p "${BUNDLE_DIR}"
+        git clone https://github.com/VundleVim/Vundle.vim.git "${BUNDLE_DIR}/vundle" 
+        nvim +PluginInstall +qall 
 
-    # Build YouCompleteMe
-    cd "${BUNDLE_DIR}/YouCompleteMe"
-    ./install.py
+        # Build YouCompleteMe
+        cd "${BUNDLE_DIR}/YouCompleteMe"
+        ./install.py
+    else
+        echo "Looks like Vundle (or another vim plugin manager is installed."
+        echo "Not installing Vundle or plugins."
+        echo "Please delete $BUNDLE_DIR and try again for fresh Vundle install."
+    fi
 
     return 0
 }

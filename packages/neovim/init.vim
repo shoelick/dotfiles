@@ -1,25 +1,7 @@
 syntax on
 filetype off
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" Vundle-installed plugins:
-Plugin 'itchyny/lightline.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-fugitive'
-
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-"Non-vundle related config
+" Non-vundle related config
 
 set nocompatible
 set number                      "Line numbers are good
@@ -45,10 +27,9 @@ set shiftround                  "Move word to word with shift navigation
 set history=1000                "Command history
 set undolevels=1000             "Undo history
 set udf                         "Persistant undo across sessions
-set scrolloff=8                 "Makes cursor stay 8 lines away from the top or bottom
+set scrolloff=4                 "Makes cursor stay 8 lines away from the top or bottom
 
-
-"Tabs to spaces
+" Tabs to spaces
 set tabstop=4 shiftwidth=4 expandtab
 
 " netrw
@@ -81,37 +62,40 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 map j gj
 map k gk
 
-runtime! ftplugin/man.vim
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 augroup spell_check
 	autocmd!
 	autocmd FileType no ft setlocal spell spelllang-en_us
 augroup END
+
+let g:python2_host_prog = '%python-path%'
+
 " Load plugins
-"if filereadable(expand("~/.vim/vundle.vim"))
-"  source ~/.vim/vundle.vim
-"  source ~/.vim/bundle/hdl_plugin/ftplugin/hdl_plugin.vim
-"endif
+if filereadable(expand("~/.config/nvim/vundle.vim"))
+  source ~/.config/nvim/vundle.vim
+endif
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
-let g:ycm_filetype_blacklist = {
-      \ 'pdf' : 1
-      \}
 " colors
 let g:rehash256 = 1
-if filereadable(expand("~/.vim/colors/molokia.vim"))
-    source ~/.vim/colors/molokia.vim
+if filereadable(expand("~/.config/nvim/colors/molokia.config/nvim"))
+    source ~/.config/nvim/colors/molokia.config/nvim
     set t_ut=
 endif
 
-"" Undo
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let &colorcolumn=join(range(81,999),",")
+
+" Undo
 if has('persistent_undo')
-  silent !mkdir ~/.vim/undo > /dev/null 2>&1
-  set undodir=~/.vim/undo
+  silent !mkdir ~/.config/nvim/undo > /dev/null 2>&1
+  set undodir=~/.config/nvim/undo
   set undofile
 endif
 
@@ -119,15 +103,29 @@ endif
 set laststatus=2 " no display fix
 set noshowmode
 
-if !has('gui_running') " no color fix
-    set t_Co=256
-endif
-
 let g:lightline = {
     \ 'colorscheme': 'powerline',
-    \ }
+	\ 'component': {
+    \   'readonly': '%{&readonly?"":""}',
+    \ },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' }
+  \ }
 
-" TODO add more lightline stuff
+
+if !has('gui_running') " no color fix
+    set t_Co=256
+
+    " Odd `esc` lag fix
+    set ttimeoutlen=10
+    set nottimeout
+    augroup FastEscape
+        autocmd!
+        au InsertEnter * set timeoutlen=0
+        au InsertLeave * set timeoutlen=1000
+    augroup END
+endif
+
 
 "" use the previous window to
 
@@ -140,6 +138,7 @@ set wildignore+=vendor/cache/**
 set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
+
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg,*.svg
 set wildignore+=*.swp,*.pyc,*.bak,*.class,*.orig
 set wildignore+=.git,.hg,.bzr,.svn
@@ -167,3 +166,7 @@ endfunction
 
 call s:SetHighlightings()
 autocmd ColorScheme * call <SID>SetHighlightings()
+
+" Spell check
+autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us 
+
