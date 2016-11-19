@@ -9,7 +9,7 @@ main() {
     echo "Shoelick Dotfiles"
     echo "Updated November '16"
 
-    export DEBUG_OUTPUT=1
+    export DEBUG_OUTPUT=0
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
     export DOTFILES_BACKUP=
@@ -53,6 +53,13 @@ main() {
     source "$DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
 
     #
+    # Move dotfiles to final location
+    #
+    ConfigureDotfilesDir
+    RetVal=$?
+    [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
+
+    #
     # Configure git
     #
     GIT_EMAIL="$(git config --global user.email)"
@@ -75,12 +82,8 @@ main() {
         git config --global user.name $INPUT
     fi
 
-    #
-    # Move dotfiles to final location
-    #
-    ConfigureDotfilesDir
-    RetVal=$?
-    [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
+    # Install global gitignore
+    InstallFiles "$DOTFILES_DIR/shoes/.gitignore_global" "$HOME"
 
     #
     # Evaluate command

@@ -1,11 +1,11 @@
 #!/bin/bash
 ###############################################################################
-# %name%.sh
+# tmux.sh
 # 
 ###############################################################################
 
 #
-# This function installs %name% using INSTALLER_CMD defined
+# This function installs tmux using INSTALLER_CMD defined
 # in the context this function is called.
 # @depends INSTALLER_CMD Command used to install packages on this platform
 # 
@@ -14,12 +14,12 @@
 #
 Install () {
 
-    $INSTALLER_CMD %name%    
+    $INSTALLER_CMD tmux    
     return $?
 } 
 
 #
-# This function configures %name% using defined DOTFILES_DIR in the
+# This function configures tmux using defined DOTFILES_DIR in the
 # context this function is called. In addition to linking any config files 
 # sourced in the home directory to source files configured in DOTFILES_DIR,
 # this function should configure any plugins.
@@ -31,6 +31,7 @@ Install () {
 #
 Configure () {
 
+    InstallFiles "$PKG_DIR/.tmux.conf" "$HOME"
 
     return $?
 }
