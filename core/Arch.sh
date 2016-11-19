@@ -6,10 +6,10 @@
 ###############################################################################
 
 # ensure we have a package manager and it's up to date
-pacman -Syyu
+sudo pacman -Syyu
 
 # Provide installer cmd
-export INSTALLER_CMD="pacman -S " 
+export INSTALLER_CMD="sudo pacman -S " 
 
 # Install all of the listed packages 
 $INSTALLER_CMD ${COMMON_CORE_PKGS[@]}

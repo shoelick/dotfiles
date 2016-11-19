@@ -29,6 +29,6 @@ This will automatically move the installation to `$HOME/.dotfiles`, backup any e
 
 ## OS Support
 * OS X (via Homebrew)
-* Debian (Coming soon)
-* Arch (Coming soon)
+* Debian 
+* Arch 
 
