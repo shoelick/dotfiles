@@ -95,10 +95,13 @@ DetectPlatform() {
         DISTRO_RAW=$(uname)
     fi
 
+    Debug "Raw distro output: $DISTRO_RAW"
+
     # Parses out specific distro
     for OS in $SUPPORTED_OS; do 
         Debug "Checking for $OS..."
-        PLATFORM=$(echo $DISTRO_RAW | grep -o "$OS")
+        PLATFORM=$(echo $DISTRO_RAW | grep -o "$OS" | head -1)
+	Debug "Platform is currently $PLATFORM"
         [[ ! -z ${PLATFORM} ]] && break;
     done
 

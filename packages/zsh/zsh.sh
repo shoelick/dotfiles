@@ -40,7 +40,7 @@ Configure () {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
     # oh-my-zsh replaces any existing .zshrc, so put ours back
-    [ -f "$HOME/.zshrc.pre-oh-my-zsh" ] && mv "$HOME/.zshrc.pre-oh-my-zsh" "$HOME/.zshrc"
+    [ -e "$HOME/.zshrc.pre-oh-my-zsh" ] && mv "$HOME/.zshrc.pre-oh-my-zsh" "$HOME/.zshrc"
     
     # Perfom modification to agnoster theme
     # Changes PS1 to show up to 3 directories up from pwd

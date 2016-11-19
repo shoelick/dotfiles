@@ -50,7 +50,8 @@ main() {
     #
     # Setup / check core
     #
-    source "$DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
+    Debug "Attempting to run $DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
+    source "$DOTFILES_REPO_DIR/core/$PLATFORM.sh"
 
     #
     # Move dotfiles to final location
@@ -77,7 +78,7 @@ main() {
     if [ -z "$GIT_USERNAME" ]; then
 
         Debug "git name not set"
-        read -P "Git user name: " INPUT
+        read -p "Git user name: " INPUT
         Debug "Using $INPUT for git user name"
         git config --global user.name $INPUT
     fi

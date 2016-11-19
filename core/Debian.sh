@@ -5,6 +5,8 @@
 # Must define INSTALLER_CMD
 ###############################################################################
 
+echo "Running core Debian set up"
+
 # ensure we have a package manager and it's up to date
 sudo aptitude update
 sudo aptitude upgrade
