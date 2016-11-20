@@ -17,39 +17,31 @@ Install () {
     if [ $PLATFORM != "Debian" ]; then
         $INSTALLER_CMD neovim
     else 
-        # Debian requires manual build and installation with pi
-       
-        # Handle dependencies
-        NEOVIM_DEPS=(
-            build-essential 
-            libtool 
-            libtool-bin 
-            autoconf 
-            automake 
-            cmake 
-            g++ 
-            pkg-config 
-            unzip 
-            python-dev 
-            python3-dev 
-            xsel 
-            libclang
-        )       
-        $INSTALLER_CMD $NEOVIM_DEPS
+        # Debian requires manual build and installation with pip
 
-        # Install via pip (?)
-        curl https://bootstrap.pypa.io/get-pip.py | sudo python
-        sudo pip uninstall -y neovim
-        cd /tmp 
-        git clone https://github.com/neovim/neovim.git neovim
-        cd neovim
+        # ... only do it if we have to
+        if ! which nvim; then
+        
+            # Handle dependencies
+            NEOVIM_DEPS="build-essential libtool libtool-bin autoconf \
+                automake cmake g++ pkg-config unzip python-dev python3-dev \ 
+                xsel libclang"
 
-        make && sudo make install && cd ..
-        rm -rf neovim
+            $INSTALLER_CMD $NEOVIM_DEPS
 
-        yes | sudo pip install neovim
+            # Install via pip (?)
+            curl https://bootstrap.pypa.io/get-pip.py | sudo python
+            sudo pip uninstall -y neovim
+            cd /tmp 
+            git clone https://github.com/neovim/neovim.git neovim
+            cd neovim
+
+            make && sudo make install && cd ..
+            rm -rf neovim
+
+            yes | sudo pip install neovim
+        fi
     fi
-
     return $?
 } 
 
@@ -65,10 +57,6 @@ Install () {
 # @return 0 on success, error code on fail
 #
 Configure () {
-
-    echo "What's that? You want vim?" 
-    sleep 2
-    echo "Vim is for losers. Have neovim."
 
     # Install config file
     mkdir -p "$HOME/.config/nvim"
@@ -88,7 +76,7 @@ Configure () {
         cd "${BUNDLE_DIR}/YouCompleteMe"
         ./install.py
     else
-        echo "Looks like Vundle (or another vim plugin manager is installed."
+        echo "Looks like Vundle (or another vim plugin manager) is installed."
         echo "Not installing Vundle or plugins."
         echo "Please delete $BUNDLE_DIR and try again for fresh Vundle install."
     fi
