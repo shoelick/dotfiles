@@ -13,7 +13,42 @@
 #
 Install () {
 
-    $INSTALLER_CMD neovim
+
+    if [ $PLATFORM != "Debian" ]; then
+        $INSTALLER_CMD neovim
+    else 
+        # Debian requires manual build and installation with pi
+       
+        # Handle dependencies
+        NEOVIM_DEPS=(
+            build-essential 
+            libtool 
+            libtool-bin 
+            autoconf 
+            automake 
+            cmake 
+            g++ 
+            pkg-config 
+            unzip 
+            python-dev 
+            python3-dev 
+            xsel 
+            libclang
+        )       
+        $INSTALLER_CMD $NEOVIM_DEPS
+
+        # Install via pip (?)
+        curl https://bootstrap.pypa.io/get-pip.py | sudo python
+        sudo pip uninstall -y neovim
+        cd /tmp 
+        git clone https://github.com/neovim/neovim.git neovim
+        cd neovim
+
+        make && sudo make install && cd ..
+        rm -rf neovim
+
+        yes | sudo pip install neovim
+    fi
 
     return $?
 } 

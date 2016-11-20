@@ -76,7 +76,7 @@ source $ZSH/oh-my-zsh.sh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Default user -- causes username to be hidden in PS1
-# export DEFAULT_USER='owl'
+export DEFAULT_USER='owl'
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
