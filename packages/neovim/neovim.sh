@@ -42,6 +42,12 @@ Install () {
             yes | sudo pip install neovim
         fi
     fi
+
+    # Arch requires python support to be installed separately
+    if [ $PLATFORM == "Arch" ]; then
+        $INSTALLER_CMD python-neovim python2-neovim
+    fi
+
     return $?
 } 
 

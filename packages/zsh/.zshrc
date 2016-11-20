@@ -88,4 +88,4 @@ export DEFAULT_USER='owl'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim="nvim"
 alias shoefiles="~/.dotfiles/shoefiles"
-
+alias tmux="tmux -u"
