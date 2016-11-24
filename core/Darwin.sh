@@ -23,6 +23,7 @@ fi
 #brew tap homebrew/versions
 
 # Install all of the listed packages 
+COMMON_CORE_PKGS=${COMMON_CORE_PKGS/sed/gnu-sed}
 brew install ${COMMON_CORE_PKGS[@]}
 
 # Provide installer cmd
