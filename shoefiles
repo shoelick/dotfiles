@@ -9,7 +9,7 @@ main() {
     echo "Shoelick Dotfiles"
     echo "Updated November '16"
 
-    export DEBUG_OUTPUT=0
+    #export DEBUG_OUTPUT=
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
     export DOTFILES_BACKUP=
@@ -85,6 +85,7 @@ main() {
 
     # Install global gitignore
     InstallFiles "$DOTFILES_DIR/shoes/.gitignore_global" "$HOME"
+    git config --global core.excludesfile ~/.gitignore_global
 
     #
     # Evaluate command

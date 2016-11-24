@@ -17,21 +17,16 @@ Install () {
     if [ $PLATFORM != "Debian" ]; then
         $INSTALLER_CMD neovim
     else 
-        # Debian requires manual build and installation with pip
+        # Debian requires manual build from source
 
         # ... only do it if we have to
-        if ! which nvim; then
+        if ! which nvim > /dev/null; then
         
             # Handle dependencies
-            NEOVIM_DEPS="build-essential libtool libtool-bin autoconf \
-                automake cmake g++ pkg-config unzip python-dev python3-dev \ 
-                xsel libclang"
+            sudo apt-get install libtool libtool-bin autoconf automake \ 
+                cmake g++ pkg-config unzip
 
-            $INSTALLER_CMD $NEOVIM_DEPS
-
-            # Install via pip (?)
-            curl https://bootstrap.pypa.io/get-pip.py | sudo python
-            sudo pip uninstall -y neovim
+            # Install from source
             cd /tmp 
             git clone https://github.com/neovim/neovim.git neovim
             cd neovim
@@ -39,7 +34,11 @@ Install () {
             make && sudo make install && cd ..
             rm -rf neovim
 
-            yes | sudo pip install neovim
+	else 
+	    echo "ERROR: nvim already installed. Not Reinstalling." 
+	    echo "Please first run 'shoefiles uninstall neovim' if you want to reinstall it."
+        echo "Use 'shoefiles update neovim' to update automatically."
+
         fi
     fi
 
