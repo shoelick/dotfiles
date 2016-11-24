@@ -58,7 +58,7 @@ function AreArgsValid() {
         echo "Invalid subcommand."
         RetVal=$ERROR_CODE_INVALID_ARGS;
     fi
-   
+
     # Check for valid target
     if [[ ! -z ${SUBCMD} ]] && ! containsElement $TARGET $SUPPORTED_TARGETS ; then
         Debug "$TARGET is not in $SUPPORTED_TARGETS";
@@ -101,7 +101,7 @@ DetectPlatform() {
     for OS in $SUPPORTED_OS; do 
         Debug "Checking for $OS..."
         PLATFORM=$(echo $DISTRO_RAW | grep -o "$OS" | head -1)
-	Debug "Platform is currently $PLATFORM"
+        Debug "Platform is currently $PLATFORM"
         [[ ! -z ${PLATFORM} ]] && break;
     done
 
@@ -131,7 +131,7 @@ ConfigureDotfilesDir() {
         Debug "Already in final destination. Not moving."
         return $ERROR_CODE_NONE;
 
-    # Otherwise, check if final destination exists
+        # Otherwise, check if final destination exists
     elif [ -e "$DOTFILES_DIR" ]; then
 
         Debug "Dotfiles directory exists and we're not in it."
@@ -147,9 +147,9 @@ ConfigureDotfilesDir() {
     if [ $CONTINUE -eq 0 ]; then
         echo "Delete existing backup and try again." 
         return $ERROR_CODE_FAILURE
-    # Make sure the backup dir doesn't exist
+        # Make sure the backup dir doesn't exist
     else 
-         [ -d "$BACKUP_DIR" ] && echo "Deleting $BACKUP_DIR" && rm -r "$BACKUP_DIR"
+        [ -d "$BACKUP_DIR" ] && echo "Deleting $BACKUP_DIR" && rm -r "$BACKUP_DIR"
     fi
 
     cd "$HOME"
@@ -176,15 +176,15 @@ ConfigureDotfilesDir() {
 # 0 on true or 1 on false
 #
 BoolPrompt() {
-    
-    DONE=0
-    while [ ! $DONE = 1 ]; do
-        read -p "$1 [Y/n]: " INPUT; # prompt
-        INPUT=$(echo "$INPUT" | tr '[A-Z]' '[a-z]') # make lowercase
-        [[ ( $INPUT = "y" || $INPUT = "n" ) ]] && DONE=1 
-    done;
-    [[ $INPUT = "n" ]] # logic's a bitch
-    echo $?
+
+DONE=0
+while [ ! $DONE = 1 ]; do
+    read -p "$1 [Y/n]: " INPUT; # prompt
+    INPUT=$(echo "$INPUT" | tr '[A-Z]' '[a-z]') # make lowercase
+    [[ ( $INPUT = "y" || $INPUT = "n" ) ]] && DONE=1 
+done;
+[[ $INPUT = "n" ]] # logic's a bitch
+echo $?
 }
 
 #
@@ -194,12 +194,12 @@ BoolPrompt() {
 # 0 for matching string, 1 for unmatch
 #
 EmailPrompt() {
-    DONE=0
-    while [ ! $DONE = 1 ]; do
-        read -p "$1" INPUT; # prompt
-        if [[ "$INPUT" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$ ]]; then
-            DONE=1     
-        fi
+DONE=0
+while [ ! $DONE = 1 ]; do
+    read -p "$1" INPUT; # prompt
+    if [[ "$INPUT" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$ ]]; then
+    DONE=1     
+fi
     done
     echo $INPUT;
 }
@@ -234,7 +234,7 @@ InstallFiles() {
     # Check if file exists at destination
     if [ -e "$DEST_PATH/$NEW_FILE_NAME" -o -L "$DEST_PATH/$NEW_FILE_NAME" ]; 
     then
-    
+
         # account for when destination exists and already is symlink to dotfiles
         if [ -L "$DEST_PATH/$NEW_FILE_NAME" ]; then
             Debug "Link exists at $DEST_PATH/$NEW_FILE_NAME..."
@@ -299,17 +299,19 @@ InstallFiles() {
 }
 
 #
-# SetupPackage 
-# Sources package scripts and runs their installation/configuration
-# @param $1 Name of package to install
+# RunPackageOp
+# Sources package scripts and runs the passed operation
+# @param $1 Package operation
+# @param $2 Name of package to install
 # @depends $DOTFILES_DIR Root directory of dotfiles repo
 # 
-SetupPackage () {
+RunPackageOp () {
 
+    PKG_OP=$1
+    PKG_NAME=$2
     RETVAL=$ERROR_CODE_NONE
-    PKG_NAME=$1
     PKG_DIR="${DOTFILES_DIR}/packages/${PKG_NAME}"
-    Debug "Using $PKG_DIR to install $PKG"
+    Debug "Using $PKG_DIR for $PKG"
 
     # Verify required script exists
     PKG_SCRIPT="${PKG_DIR}/${PKG_NAME}.sh"
@@ -318,15 +320,28 @@ SetupPackage () {
         echo "Checked: $PKG_SCRIPT"
         echo "Invalid package name provided."
     else
-        # Source package install script
+        # Source package script
         # All should include definitions for:
-        # Install, Configure
+        # Install, Configure[, Update, Uninstall ]
         source "$PKG_SCRIPT"
-        Install && RETVAL=$?
-        [ $RETVAL == 0 ] && Configure && RETVAL=$?
-        unset -f Install Configure
+        Debug "Entering command selection majigger"
+        ## Execute appropriate action 
+        case $PKG_OP in
+            "install")
+                Debug "Subcommand was $PKG_OP"
+                Install && RETVAL=$?
+                [ $RETVAL == 0 ] && Configure && RETVAL=$?
+            ;;
+            "update")
+                Debug "Subcommand was $PKG_OP"
+                Update
+            ;;
+            "uninstall")
+                Debug "Subcommand was $PKG_OP"
+                Uninstall
+            ;;
+        esac
     fi
-
+    unset -f Install Configure Update Uninstall
     return $RETVAL
 }
-

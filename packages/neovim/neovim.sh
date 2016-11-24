@@ -35,7 +35,7 @@ Install () {
             rm -rf neovim
 
 	else 
-	    echo "ERROR: nvim already installed. Not Reinstalling." 
+	    echo "WARNING: nvim already installed. Not Reinstalling." 
 	    echo "Please first run 'shoefiles uninstall neovim' if you want to reinstall it."
         echo "Use 'shoefiles update neovim' to update automatically."
 
@@ -85,6 +85,7 @@ Configure () {
         echo "Not installing Vundle or plugins."
         echo "Please delete $BUNDLE_DIR and try again for fresh Vundle install."
     fi
+}
 
 # 
 # This function provides a means to update neovim. 
@@ -92,8 +93,26 @@ Configure () {
 # Optional
 #
 Update() {
-    
 
+    if [ $PLATFORM  = "Debian" ]; then
+        Uninstall
+
+        # Make sure dependencies are up to date
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install libtool libtool-bin autoconf automake \ 
+            cmake g++ pkg-config unzip
+
+        # Install from source
+        cd /tmp 
+        git clone https://github.com/neovim/neovim.git neovim
+        cd neovim
+        make && sudo make install && cd ..
+
+        rm -rf neovim
+    else
+        echo "Neovim should be updatable through your system's package manager."
+    fi
 }
 
 #
@@ -101,7 +120,14 @@ Update() {
 # @depends UNINSTALL_CMD Uninstall command for this package
 # Optional
 #
-Install() {
+Uninstall() {
 
-    echo "Uninstallation for neovim is not implemented."
+    if [ $PLATFORM = "Debian" ]; then
+        echo "Removing Neovim installation..."
+        sudo rm /usr/local/bin/nvim
+        sudo rm -r /usr/local/share/nvim/    
+    else
+        $UNINSTALL_CMD neovim
+    fi
+
 }

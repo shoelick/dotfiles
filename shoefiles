@@ -9,7 +9,7 @@ main() {
     echo "Shoelick Dotfiles"
     echo "Updated November '16"
 
-    #export DEBUG_OUTPUT=
+    export DEBUG_OUTPUT=
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
     export DOTFILES_BACKUP=
@@ -90,32 +90,21 @@ main() {
     #
     # Evaluate command
     #
-
-    Debug "Entering command selection majigger"
-    ## Execute appropriate action 
-    case $SUBCMD in
-        "install")
-            Debug "Subcommand was $SUBCMD"
-            if containsElement $TARGET $SUPPORTED_GROUPS ; then
-                Debug "Preparing to install group $TARGET"
-                # Convert to all caps for variable name
-                TARGET=$(echo $TARGET | tr '[a-z]' '[A-Z]')
-                GROUPVAR="GROUP_$TARGET"
-                Debug "Final package group varname: $GROUPVAR"
-                for PKG in ${!GROUPVAR}; do
-                    SetupPackage $PKG
-                done;
-            elif containsElement $TARGET $SUPPORTED_TARGETS ; then
-                Debug "Preparing to install package $TARGET"
-                SetupPackage $TARGET
-            else 
-                echo "Target $TARGET not supported."
-            fi
-            ;;
-        "update")
-            Debug "Subcommand was $SUBCMD"
-            ;;
-    esac
+    if containsElement $TARGET $SUPPORTED_GROUPS ; then
+        Debug "Preparing to install group $TARGET"
+        # Convert to all caps for variable name
+        TARGET=$(echo $TARGET | tr '[a-z]' '[A-Z]')
+        GROUPVAR="GROUP_$TARGET"
+        Debug "Final package group varname: $GROUPVAR"
+        for PKG in ${!GROUPVAR}; do
+            RunPackageOp $SUBCMD $PKG
+        done;
+    elif containsElement $TARGET $SUPPORTED_TARGETS ; then
+        Debug "Preparing to install package $TARGET"
+        RunPackageOp $SUBCMD $TARGET
+    else 
+        echo "Target $TARGET not supported."
+    fi
     
     echo "Shoefiles complete. Sparing you from shoe puns."
     return $RetVal
