@@ -86,7 +86,22 @@ Configure () {
         echo "Please delete $BUNDLE_DIR and try again for fresh Vundle install."
     fi
 
-    return 0
+# 
+# This function provides a means to update neovim. 
+# @depends UPDATE_CMD Command to update a package on this platform
+# Optional
+#
+Update() {
+    
+
 }
 
+#
+# This function provides a means to uninstall neovim.
+# @depends UNINSTALL_CMD Uninstall command for this package
+# Optional
+#
+Install() {
 
+    echo "Uninstallation for neovim is not implemented."
+}

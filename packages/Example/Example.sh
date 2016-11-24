@@ -36,3 +36,22 @@ Configure () {
 }
 
 
+# 
+# This function provides a means to update %name%. 
+# @depends UPDATE_CMD Command to update a package on this platform
+# Optional
+#
+Update() {
+
+    echo "Updating for %name% is not implemented."
+}
+
+#
+# This function provides a means to uninstall %name%.
+# @depends UNINSTALL_CMD Uninstall command for this package
+# Optional
+#
+Install() {
+
+    echo "Uninstallation for %name% is not implemented."
+}
