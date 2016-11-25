@@ -33,11 +33,12 @@ Debug () {
 # Print helpful Usage message for user.
 # 
 PrintUsage() {
-
-    echo "Usage: shoefiles <subcommand> <target>"
-    echo "Supported subcommands: $SUPPORTED_CMDS"
-    echo "Supported packages: $SUPPORTED_PKGS"
-    echo "Supported groups: $SUPPORTED_GROUPS"
+cat << UsagePrint
+echo "Usage: shoefiles <subcommand> <target>"
+echo "Supported subcommands: $SUPPORTED_CMDS"
+echo "Supported packages: $SUPPORTED_PKGS"
+echo "Supported groups: $SUPPORTED_GROUPS"
+UsagePrint
 
 }
 
@@ -82,12 +83,11 @@ function AreArgsValid() {
                 Debug "Subcommand is $ARG"
                 SUBCMD=$ARG
             else
-                Debug "Subcommand is $ARG"
+                Debug "Target is $ARG"
                 TARGET=$ARG
             fi
         fi
     done
-
 
     # Subcommand is required
     if ! containsElement $SUBCMD $SUPPORTED_CMDS ; then

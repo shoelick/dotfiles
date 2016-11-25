@@ -17,8 +17,6 @@ call vundle#begin("$HOME/.config/nvim/bundle")
 " let Vundle manage Vundle (required)
 Plugin 'VundleVim/Vundle.vim'
 
-" Keeping vim rather simple
-
 " Generic
 Bundle "itchyny/lightline.vim"
 Bundle "tpope/vim-fugitive"
@@ -32,10 +30,10 @@ Plugin 'honza/vim-snippets'
 
 " Syntax
 Plugin 'alisdair/vim-armasm'
-Bundle "pangloss/vim-javascript"
-Plugin 'othree/html5.vim'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'cakebaker/scss-syntax.vim'
+"Bundle "pangloss/vim-javascript"
+"Plugin 'othree/html5.vim'
+"Plugin 'hail2u/vim-css3-syntax'
+"Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'Valloric/MatchTagAlways'
 
 " Colorscheme

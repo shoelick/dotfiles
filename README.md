@@ -2,11 +2,11 @@
 
 ## Intro
 
-The purpose of this dotfiles repository is create multi-platform, easily-deployable, and easily extensible dotfiles framework.
+The purpose of this dotfiles repository is create multi-platform, easily-deployable, and easily extensible preferences framework.
 
-Poke around the various config files to see my tweaks from the default. See the wiki for details what is supported and on extending. Pull requests welcome.
+Poke around the various config files to see my tweaks from the defaults. See the wiki for details what is supported and on extending. Pull requests welcome.
 
-Loosely based on [Serubin's Dotfiles](https://github.com/Serubin/dotfiles) 
+Loosely based on [Serubin's Dotfiles](https://github.com/Serubin/dotfiles).
 
 ## Features
 
@@ -18,8 +18,6 @@ Loosely based on [Serubin's Dotfiles](https://github.com/Serubin/dotfiles)
 \* The disclaimer here is obvious; use at your own risk. I've done my best to make sure shoefiles are non-destructive.
 
 ## Installation
-
-Before installing, I do recommend looking at `packages/vim/vundle.vim` and evaluating if there are any plugins you blatantly do not need.
 
 Clone and run:
 
