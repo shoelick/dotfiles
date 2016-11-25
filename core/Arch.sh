@@ -9,7 +9,7 @@
 sudo pacman -Syyu
 
 # Provide installer cmd
-export INSTALLER_CMD="sudo pacman -S " 
+export INSTALLER_CMD="sudo pacman -S --needed" 
 
 # Install all of the listed packages 
 $INSTALLER_CMD ${COMMON_CORE_PKGS[@]}

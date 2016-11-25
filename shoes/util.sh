@@ -23,7 +23,7 @@ containsElement () {
 #
 Debug () {
 
-    if [ ! -z ${DEBUG_OUTPUT+"shitt"} ] ; then 
+    if [ "${DEBUG_OUTPUT}" -eq 1 ] ; then 
         echo "DEBUG: $@"
     fi
 
@@ -46,11 +46,48 @@ PrintUsage() {
 # configuration.
 function AreArgsValid() {
 
+    RetVal=$ERROR_CODE_NONE
+
+    # Used to know when we're no longer parsing flags
+    FLAGS_FINISHED=0
+
+    SUBCMD=
+    TARGET=
+    
     Debug "AreArgsValid Received $@"
 
-    SUBCMD=$1
-    TARGET=$2
-    RetVal=$ERROR_CODE_NONE
+    for ARG in "$@"; do
+        Debug "Processing argument $ARG"
+
+        if [ $FLAGS_FINISHED -eq 0 ] && [ ${ARG:0:1} = "-" ]; then
+            ARG_LENGTH=${#ARG}
+            Debug "Argument string length: $ARG_LENGTH"
+            for (( FLAG_IND=1; FLAG_IND < ${#ARG}; FLAG_IND++ )); do
+                Debug "At index $FLAG_IND"
+                FLAG=${ARG:$FLAG_IND:1}
+                Debug "Looking at flag $FLAG"
+                case $FLAG in
+                    "v")
+                        DEBUG_OUTPUT=1
+                        echo "Enabling verbose output."
+                        ;;
+                    *)
+                        echo "Unknown flag $FLAG. Ignoring."
+                        ;;
+                esac
+            done
+        else
+            FLAGS_FINISHED=1
+            if [ -z $SUBCMD ]; then
+                Debug "Subcommand is $ARG"
+                SUBCMD=$ARG
+            else
+                Debug "Subcommand is $ARG"
+                TARGET=$ARG
+            fi
+        fi
+    done
+
 
     # Subcommand is required
     if ! containsElement $SUBCMD $SUPPORTED_CMDS ; then
@@ -339,6 +376,10 @@ RunPackageOp () {
             "uninstall")
                 Debug "Subcommand was $PKG_OP"
                 Uninstall
+            ;;
+            *) 
+                echo "Invalid sub-command $PKG_OP."
+                echo "If you see this message, you goofed quite badly."
             ;;
         esac
     fi

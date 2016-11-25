@@ -9,7 +9,7 @@ main() {
     echo "Shoelick Dotfiles"
     echo "Updated November '16"
 
-    export DEBUG_OUTPUT=
+    export DEBUG_OUTPUT=0
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
     export DOTFILES_BACKUP=
@@ -51,6 +51,8 @@ main() {
     # Setup / check core
     #
     Debug "Attempting to run $DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
+    echo "Performing set up for $PLATFORM."
+    echo "You will probably be prompted for sudo access."
     source "$DOTFILES_REPO_DIR/core/$PLATFORM.sh"
 
     #
