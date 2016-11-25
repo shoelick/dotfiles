@@ -9,7 +9,10 @@ main() {
     echo "Shoelick Dotfiles"
     echo "Updated November '16"
 
-    export DEBUG_OUTPUT=0
+    # Set to 1 for debugging argument parsing or earlier
+    # Otherwise use -v for debugging
+    export DEBUG_OUTPUT=0 
+
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
     export DOTFILES_BACKUP=
@@ -20,9 +23,6 @@ main() {
 
     source "$DOTFILES_REPO_DIR/shoes/util.sh"
     source "$DOTFILES_REPO_DIR/shoes/shoes.conf"
-
-    # Debug warning will show if above var is set
-    Debug "Debugging is ON! To turn off, unset DEBUG_OUTPUT in shoefiles script."
 
     RetVal=0;
 
