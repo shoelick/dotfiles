@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 # shoefiles (bash script)
 # This script handles installation of shoelick's dotfiles.

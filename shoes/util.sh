@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 # util.sh
 # This script file contains a collection of useful helper function.
