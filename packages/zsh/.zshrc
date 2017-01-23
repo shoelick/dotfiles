@@ -86,6 +86,8 @@ export DEFAULT_USER='owl'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vim="nvim"
+[ ! -z $(which nvim) ] && alias vim="nvim"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux="tmux -u"
+
+PATH=$PATH:/usr/local/bin

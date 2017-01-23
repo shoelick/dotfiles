@@ -1,13 +1,13 @@
 #!/bin/bash
 ###############################################################################
 # neovim.sh
-# 
+#
 ###############################################################################
 
 #
 # This function installs neovim using INSTALLER_CMD defined
 # in the context this function is called.
-# 
+#
 # @param none
 # @return 0 on success, error code on fail
 #
@@ -16,28 +16,28 @@ Install () {
 
     if [ $PLATFORM != "Debian" ]; then
         $INSTALLER_CMD neovim
-    else 
+    else
         # Debian requires manual build from source
 
         # ... only do it if we have to
         if ! which nvim > /dev/null; then
-        
+
             # Handle dependencies
-            sudo apt-get install libtool libtool-bin autoconf automake \ 
+            sudo apt-get install libtool libtool-bin autoconf automake \
                 cmake g++ pkg-config unzip
 
             # Install from source
-            cd /tmp 
+            cd /tmp
             git clone https://github.com/neovim/neovim.git neovim
             cd neovim
 
             make && sudo make install && cd ..
             rm -rf neovim
 
-	else 
-	    echo "WARNING: nvim already installed. Not Reinstalling." 
-	    echo "Please first run 'shoefiles uninstall neovim' if you want to reinstall it."
-        echo "Use 'shoefiles update neovim' to update automatically."
+        else
+            echo "WARNING: nvim already installed. Not Reinstalling."
+            echo "Please first run 'shoefiles uninstall neovim' if you want to reinstall it."
+            echo "Use 'shoefiles update neovim' to update automatically."
 
         fi
     fi
@@ -48,11 +48,11 @@ Install () {
     fi
 
     return $?
-} 
+}
 
 #
 # This function configures neovim using defined DOTFILES_DIR in the
-# context this function is called. In addition to linking any config files 
+# context this function is called. In addition to linking any config files
 # sourced in the home directory to source files configured in DOTFILES_DIR,
 # this function should configure any plugins.
 # @depends DOTFILES_DIR New configuration
@@ -75,7 +75,7 @@ Configure () {
     if [ ! -e "$BUNDLE_DIR" ]; then
         mkdir -p "${BUNDLE_DIR}"
         git clone https://github.com/VundleVim/Vundle.vim.git "${BUNDLE_DIR}/vundle" 
-        nvim +PluginInstall +qall 
+        nvim +PluginInstall +qall
 
         # Build YouCompleteMe
         cd "${BUNDLE_DIR}/YouCompleteMe"
@@ -87,8 +87,8 @@ Configure () {
     fi
 }
 
-# 
-# This function provides a means to update neovim. 
+#
+# This function provides a means to update neovim.
 # @depends UPDATE_CMD Command to update a package on this platform
 # Optional
 #
@@ -100,11 +100,11 @@ Update() {
         # Make sure dependencies are up to date
         sudo apt-get update
         sudo apt-get upgrade
-        sudo apt-get install libtool libtool-bin autoconf automake \ 
+        sudo apt-get install libtool libtool-bin autoconf automake \
             cmake g++ pkg-config unzip
 
         # Install from source
-        cd /tmp 
+        cd /tmp
         git clone https://github.com/neovim/neovim.git neovim
         cd neovim
         make && sudo make install && cd ..
@@ -125,7 +125,7 @@ Uninstall() {
     if [ $PLATFORM = "Debian" ]; then
         echo "Removing Neovim installation..."
         sudo rm /usr/local/bin/nvim
-        sudo rm -r /usr/local/share/nvim/    
+        sudo rm -r /usr/local/share/nvim/
     else
         $UNINSTALL_CMD neovim
     fi

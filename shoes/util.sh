@@ -54,7 +54,7 @@ function AreArgsValid() {
 
     SUBCMD=
     TARGET=
-    
+
     Debug "AreArgsValid Received $@"
 
     for ARG in "$@"; do
@@ -71,6 +71,10 @@ function AreArgsValid() {
                     "v")
                         DEBUG_OUTPUT=1
                         echo "Enabling verbose output."
+                        ;;
+                    "l") 
+                        CONFIG_ONLY=1
+                        echo "Configuring dotfile links only; no installations."
                         ;;
                     *)
                         echo "Unknown flag $FLAG. Ignoring."
@@ -144,7 +148,12 @@ DetectPlatform() {
 
     # Report error 
     Debug "Platform is $PLATFORM"
-    [[ -z ${PLATFORM+"shnikey!"} ]] && RetVal=$ERROR_CODE_FAILURE && echo "Welp. We don't have your back this time fam. OS not supported." 
+    if [[ -z ${PLATFORM+"shnikey!"} ]]; then
+        RetVal=$ERROR_CODE_FAILURE 
+        echo "Welp. We don't have your back this time fam. OS not supported." 
+        echo "To set up dotfiles without package installation,"
+        echo "re-run shoefiles with the -l flag."
+    fi
 
     return $RetVal
 }
@@ -362,11 +371,12 @@ RunPackageOp () {
         # Install, Configure[, Update, Uninstall ]
         source "$PKG_SCRIPT"
         Debug "Entering command selection majigger"
-        ## Execute appropriate action 
+        ## Execute appropriate action
         case $PKG_OP in
             "install")
                 Debug "Subcommand was $PKG_OP"
-                Install && RETVAL=$?
+                [ $CONFIG_ONLY -eq 1 ] && Install
+                RETVAL=$?
                 [ $RETVAL == 0 ] && Configure && RETVAL=$?
             ;;
             "update")
@@ -377,7 +387,7 @@ RunPackageOp () {
                 Debug "Subcommand was $PKG_OP"
                 Uninstall
             ;;
-            *) 
+            *)
                 echo "Invalid sub-command $PKG_OP."
                 echo "If you see this message, you goofed quite badly."
             ;;

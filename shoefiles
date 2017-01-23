@@ -7,11 +7,14 @@
 main() {
 
     echo "Shoelick Dotfiles"
-    echo "Updated November '16"
+    echo "Updated January '17"
 
     # Set to 1 for debugging argument parsing or earlier
     # Otherwise use -v for debugging
     export DEBUG_OUTPUT=0 
+
+    # Set to 1 to disable package manager operations
+    export CONFIG_ONLY=0
 
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
@@ -47,13 +50,19 @@ main() {
     [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
     echo "Detected $PLATFORM. Lucky for you, $PLATFORM is supported."
 
+    exit
+
     #
     # Setup / check core
     #
-    Debug "Attempting to run $DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
-    echo "Performing set up for $PLATFORM."
-    echo "You will probably be prompted for sudo access."
-    source "$DOTFILES_REPO_DIR/core/$PLATFORM.sh"
+    if [ CONFIG_ONLY -neq 1 ]; then
+        Debug "Attempting to run $DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
+        echo "Performing set up for $PLATFORM."
+        echo "You will probably be prompted for sudo access."
+        source "$DOTFILES_REPO_DIR/core/$PLATFORM.sh"
+    else 
+        Debug "Skipping core setup..."
+    fi
 
     #
     # Move dotfiles to final location

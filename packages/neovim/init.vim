@@ -32,6 +32,10 @@ set scrolloff=4                 "Makes cursor stay 8 lines away from the top or 
 " Tabs to spaces
 set tabstop=4 shiftwidth=4 expandtab
 
+nnoremap <Leader>rtw :%s/\s\+$//e<CR>
+
+match ErrorMsg '\s\+$'
+
 " netrw
 let g:netrw_liststyle=3         "List styles for file explorer
 let g:netrw_altv=1
