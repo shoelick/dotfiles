@@ -91,3 +91,7 @@ alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux="tmux -u"
 
 PATH=$PATH:/usr/local/bin
+
+# Make bash evaluate aliases after sudo
+# See AskUbuntu post here: <http://tinyurl.com/6azvksf>
+alias sudo="sudo "
