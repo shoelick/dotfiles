@@ -88,10 +88,15 @@ export DEFAULT_USER='owl'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 [ ! -z $(which nvim) ] && alias vim="nvim"
 alias shoefiles="~/.dotfiles/shoefiles"
-alias tmux="tmux -u"
+alias tmux="TERM=screen-256-color-bce tmux -u"
 
 PATH=$PATH:/usr/local/bin
 
 # Make bash evaluate aliases after sudo
 # See AskUbuntu post here: <http://tinyurl.com/6azvksf>
 alias sudo="sudo "
+
+# android development
+export ANDROID_HOME=~/Library/Android/sdk
+export PATH=${PATH}:${ANDROID_HOME}/tools
+export PATH=${PATH}:${ANDROID_HOME}/platform-tools

@@ -5,7 +5,6 @@ filetype off
 
 set nocompatible
 set number                      "Line numbers are good
-highlight LineNr ctermfg=grey   "Colored line numbers are better"
 set title                       "Titles are cool
 set hidden                      "Hide buffer instead of closing it - stop buffering of empty files
 set pastetoggle=<F2>            "Paste without being smart
@@ -34,7 +33,55 @@ set tabstop=4 shiftwidth=4 expandtab
 
 nnoremap <Leader>rtw :%s/\s\+$//e<CR>
 
-match ErrorMsg '\s\+$'
+""""""""""""""""""""""""""""""""""""""""""""""""" HIGHLIGHTING
+
+" match ErrorMsg '\s\+$'
+
+" Matching parentheses
+hi MatchParen cterm=bold ctermbg=none ctermfg=34
+" Colored line numbers are better
+"hi LineNr cterm=none ctermfg=green ctermfg=blue
+
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+function! s:SetHighlightings()
+    hi Pmenu           guifg=#66D9EF guibg=#000000
+    hi PmenuSel                      guibg=#808080
+    hi PmenuSbar                     guibg=#080808
+    hi PmenuThumb      guifg=#66D9EF
+endfunction
+
+call s:SetHighlightings()
+
+""""""""""""""""""""""""""""""""""""""""""""""""" COLORS
+autocmd ColorScheme * call <SID>SetHighlightings()
+
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let &colorcolumn=join(range(81,999),",")
+
+" colors
+"let g:rehash256 = 1
+if filereadable(expand("~/.config/nvim/colors/molokia.config/nvim"))
+    source ~/.config/nvim/colors/molokia.config/nvim
+    set t_ut=
+endif
+
+" lightline
+set laststatus=2 " no display fix
+set noshowmode
+
+" Setting up pretty status bar
+let g:lightline = {
+    \ 'colorscheme': 'powerline',
+	\ 'component': {
+    \   'readonly': '%{&readonly?"":""}',
+    \ },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' }
+  \ }
+
+""""""""""""""""""""""""""""""""""""""""""""""""" OTHER
 
 " netrw
 let g:netrw_liststyle=3         "List styles for file explorer
@@ -66,13 +113,6 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 map j gj
 map k gk
 
-" Trigger a highlight in the appropriate direction when pressing these keys:
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-augroup spell_check
-	autocmd!
-	autocmd FileType no ft setlocal spell spelllang-en_us
-augroup END
 
 let g:python2_host_prog = '%python-path%'
 
@@ -86,15 +126,8 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
-" colors
-let g:rehash256 = 1
-if filereadable(expand("~/.config/nvim/colors/molokia.config/nvim"))
-    source ~/.config/nvim/colors/molokia.config/nvim
-    set t_ut=
-endif
-
-highlight ColorColumn ctermbg=235 guibg=#2c2d27
-let &colorcolumn=join(range(81,999),",")
+" vim-jsx settings
+let g:jsx_ext_required = 0
 
 " Undo
 if has('persistent_undo')
@@ -102,20 +135,6 @@ if has('persistent_undo')
   set undodir=~/.config/nvim/undo
   set undofile
 endif
-
-" lightline
-set laststatus=2 " no display fix
-set noshowmode
-
-let g:lightline = {
-    \ 'colorscheme': 'powerline',
-	\ 'component': {
-    \   'readonly': '%{&readonly?"":""}',
-    \ },
-    \ 'separator': { 'left': '', 'right': '' },
-    \ 'subseparator': { 'left': '', 'right': '' }
-  \ }
-
 
 if !has('gui_running') " no color fix
     set t_Co=256
@@ -161,16 +180,10 @@ augroup makefile
      autocmd FileType make setlocal noexpandtab
 augroup END
 
-function! s:SetHighlightings()
-    hi Pmenu           guifg=#66D9EF guibg=#000000
-    hi PmenuSel                      guibg=#808080
-    hi PmenuSbar                     guibg=#080808
-    hi PmenuThumb      guifg=#66D9EF
-endfunction
-
-call s:SetHighlightings()
-autocmd ColorScheme * call <SID>SetHighlightings()
-
 " Spell check
-autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us 
+augroup spell_check
+	autocmd!
+	autocmd FileType no ft setlocal spell spelllang-en_us
+augroup END
 
+autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
