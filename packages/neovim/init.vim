@@ -187,3 +187,6 @@ augroup spell_check
 augroup END
 
 autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+
+" Manual python location for use in virtualenvs
+let g:python_host_prog='/usr/local/bin/python'

@@ -88,7 +88,7 @@ export DEFAULT_USER='owl'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 [ ! -z $(which nvim) ] && alias vim="nvim"
 alias shoefiles="~/.dotfiles/shoefiles"
-alias tmux="TERM=screen-256-color-bce tmux -u"
+alias tmux=" tmux -u"
 
 PATH=$PATH:/usr/local/bin
 
@@ -100,3 +100,4 @@ alias sudo="sudo "
 export ANDROID_HOME=~/Library/Android/sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools
 export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+eval "$(pyenv init -)"
