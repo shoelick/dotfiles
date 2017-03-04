@@ -48,6 +48,7 @@ main() {
     Debug "We are on $PLATFORM"
     Debug "Returned $RetVal"
     # Exit if invalid 
+
     if [ $RetVal -gt $ERROR_CODE_NONE ]; then 
         return $RetVal;
     elif [ $CONFIG_ONLY -ne 1 ]; then
