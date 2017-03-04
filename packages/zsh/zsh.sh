@@ -37,10 +37,15 @@ Configure () {
     # Install oh-my-zsh
     # Won't install if it detects a present installation
     # automatically sets zsh as default shell
-    curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+    curl -O https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 	# Remove line that drops into zsh shell as part of script
-	sed -i '' 's/env zsh//' install.sh
-    sh -c  install.sh
+    if [ $PLATFORM -eq "Darwin" ]; then
+        sed -i '' 's/env zsh//' install.sh
+    else
+        sed -i 's/env zsh//' install.sh
+    fi
+    chmod +x ./install.sh
+    sh -c  ./install.sh
 
     # oh-my-zsh replaces any existing .zshrc, so put ours back
     [ -e "$HOME/.zshrc.pre-oh-my-zsh" ] && mv "$HOME/.zshrc.pre-oh-my-zsh" "$HOME/.zshrc"

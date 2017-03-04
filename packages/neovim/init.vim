@@ -73,13 +73,13 @@ set noshowmode
 
 " Setting up pretty status bar
 let g:lightline = {
-    \ 'colorscheme': 'powerline',
-	\ 'component': {
-    \   'readonly': '%{&readonly?"":""}',
-    \ },
-    \ 'separator': { 'left': '', 'right': '' },
-    \ 'subseparator': { 'left': '', 'right': '' }
-  \ }
+            \ 'colorscheme': 'powerline',
+            \ 'component': {
+            \   'readonly': '%{&readonly?"":""}',
+            \ },
+            \ 'separator': { 'left': '', 'right': '' },
+            \ 'subseparator': { 'left': '', 'right': '' }
+            \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""" OTHER
 
@@ -118,7 +118,7 @@ let g:python2_host_prog = '%python-path%'
 
 " Load plugins
 if filereadable(expand("~/.config/nvim/vundle.vim"))
-  source ~/.config/nvim/vundle.vim
+    source ~/.config/nvim/vundle.vim
 endif
 
 " better key bindings for UltiSnipsExpandTrigger
@@ -131,9 +131,9 @@ let g:jsx_ext_required = 0
 
 " Undo
 if has('persistent_undo')
-  silent !mkdir ~/.config/nvim/undo > /dev/null 2>&1
-  set undodir=~/.config/nvim/undo
-  set undofile
+    silent !mkdir ~/.config/nvim/undo > /dev/null 2>&1
+    set undodir=~/.config/nvim/undo
+    set undofile
 endif
 
 if !has('gui_running') " no color fix
@@ -170,23 +170,33 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
- \ 'dir':  '\v[\/]\.(git|hg|svn)$',
- \ 'file': '\v\.(exe|so|dll)$',
- \ 'link': 'some_bad_symbolic_links',
- \ }
+            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\v\.(exe|so|dll)$',
+            \ 'link': 'some_bad_symbolic_links',
+            \ }
 
 augroup makefile
-     autocmd!
-     autocmd FileType make setlocal noexpandtab
+    autocmd!
+    autocmd FileType make setlocal noexpandtab
 augroup END
 
 " Spell check
 augroup spell_check
-	autocmd!
-	autocmd FileType no ft setlocal spell spelllang-en_us
+    autocmd!
+    autocmd FileType no ft setlocal spell spelllang-en_us
 augroup END
 
 autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+
+function! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+" Using file extension
+autocmd BufWritePre *.h,*.c,*.java,*.cpp :call <SID>StripTrailingWhitespaces()
 
 " Manual python location for use in virtualenvs
 let g:python_host_prog='/usr/local/bin/python'

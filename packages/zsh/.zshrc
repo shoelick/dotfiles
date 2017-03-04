@@ -76,7 +76,7 @@ source $ZSH/oh-my-zsh.sh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Default user -- causes username to be hidden in PS1
-export DEFAULT_USER='owl'
+export DEFAULT_USER='mxs9342'
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -100,4 +100,5 @@ alias sudo="sudo "
 export ANDROID_HOME=~/Library/Android/sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools
 export PATH=${PATH}:${ANDROID_HOME}/platform-tools
-eval "$(pyenv init -)"
+#eval "$(pyenv init -)"
+export PATH=/home/mxs9342/bin:$PATH
