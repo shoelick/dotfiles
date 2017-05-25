@@ -31,7 +31,7 @@ Install () {
 #
 Configure () {
 
-    InstallFiles "${PKG_DIR}/.vimrc" ${HOME}/.vimrc
+    InstallFiles "${PKG_DIR}/.vimrc" "${HOME}"
     return $?
 }
 
@@ -51,7 +51,7 @@ Update() {
 # @depends UNINSTALL_CMD Uninstall command for this package
 # Optional
 #
-Install() {
+Uninstall() {
 
     echo "Uninstallation for vim is not implemented."
 }

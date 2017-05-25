@@ -51,7 +51,7 @@ Update() {
 # @depends UNINSTALL_CMD Uninstall command for this package
 # Optional
 #
-Install() {
+Uninstall() {
 
     echo "Uninstallation for %name% is not implemented."
 }
