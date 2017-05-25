@@ -7,7 +7,7 @@
 main() {
 
     echo "Shoelick Dotfiles"
-    echo "Updated January '17"
+    echo "Updated May '17"
 
     # Set to 1 for debugging argument parsing or earlier
     # Otherwise use -v for debugging
