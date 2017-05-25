@@ -41,6 +41,7 @@ Configure () {
 	# Remove line that drops into zsh shell as part of script
 	sed -i '' 's/env zsh//' install.sh
     sh -c  install.sh
+    rm install.sh
 
     # oh-my-zsh replaces any existing .zshrc, so put ours back
     [ -e "$HOME/.zshrc.pre-oh-my-zsh" ] && mv "$HOME/.zshrc.pre-oh-my-zsh" "$HOME/.zshrc"
@@ -50,9 +51,10 @@ Configure () {
     # The single '' after -i makes the command macOS-safe
     sed -i '' -e "s/blue black '%\~'/blue black '%3\~'/g" "${HOME}/.oh-my-zsh/themes/agnoster.zsh-theme" 2>/dev/null
 
+    cd $DOFTILES_DIR
+
     # Download font for user and print directions to install
     # @todo automatically install somehow?
-    cd $DOFTILES_DIR
     #curl -O "http://media.nodnod.net/Inconsolata-dz.otf.zip"
     #echo "Downloaded zip with InconsolataDz font in $DOTFILES_DIR. Install as needed."
 
