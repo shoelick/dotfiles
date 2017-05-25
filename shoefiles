@@ -46,14 +46,19 @@ main() {
     DetectPlatform
     RetVal=$?
     Debug "We are on $PLATFORM"
+    Debug "Returned $RetVal"
     # Exit if invalid 
-    [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
-    echo "Detected $PLATFORM. Lucky for you, $PLATFORM is supported."
+
+    if [ $RetVal -gt $ERROR_CODE_NONE ]; then 
+        return $RetVal;
+    elif [ $CONFIG_ONLY -ne 1 ]; then
+        echo "Detected $PLATFORM. Lucky for you, $PLATFORM is supported."
+    fi
 
     #
     # Setup / check core
     #
-    if [ CONFIG_ONLY -neq 1 ]; then
+    if [ $CONFIG_ONLY -ne 1 ]; then
         Debug "Attempting to run $DOTFILES_REPO_DIR/core/${PLATFORM}.sh"
         echo "Performing set up for $PLATFORM."
         echo "You will probably be prompted for sudo access."

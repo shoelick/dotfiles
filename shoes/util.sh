@@ -148,7 +148,7 @@ DetectPlatform() {
 
     # Report error 
     Debug "Platform is $PLATFORM"
-    if [[ -z ${PLATFORM+"shnikey!"} ]]; then
+    if [[ -z $PLATFORM && CONFIG_ONLY -eq 0 ]]; then
         RetVal=$ERROR_CODE_FAILURE 
         echo "Welp. We don't have your back this time fam. OS not supported." 
         echo "To set up dotfiles without package installation,"
@@ -375,8 +375,11 @@ RunPackageOp () {
         case $PKG_OP in
             "install")
                 Debug "Subcommand was $PKG_OP"
-                [ $CONFIG_ONLY -eq 1 ] && Install
-                RETVAL=$?
+                RETVAL=0
+                if [ $CONFIG_ONLY == 0 ]; then
+                    Install
+                    RETVAL=$?
+                fi
                 [ $RETVAL == 0 ] && Configure && RETVAL=$?
             ;;
             "update")
