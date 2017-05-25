@@ -83,9 +83,6 @@ set noshowmode
 
 """"""""""""""""""""""""""""""""""""""""""""""""" OTHER
 
-set asmsyntax='armasm'
-set filetype_inc='armasm'
-
 " Key mappings
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
