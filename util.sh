@@ -34,10 +34,8 @@ Debug () {
 # 
 PrintUsage() {
 cat << UsagePrint
-echo "Usage: shoefiles <subcommand> <target>"
-echo "Supported subcommands: $SUPPORTED_CMDS"
-echo "Supported packages: $SUPPORTED_PKGS"
-echo "Supported groups: $SUPPORTED_GROUPS"
+echo "Usage: shoefiles [-v]"
+-v verbose output
 UsagePrint
 
 }
@@ -72,10 +70,6 @@ function AreArgsValid() {
                         DEBUG_OUTPUT=1
                         echo "Enabling verbose output."
                         ;;
-                    "l") 
-                        CONFIG_ONLY=1
-                        echo "Configuring dotfile links only; no installations."
-                        ;;
                     *)
                         echo "Unknown flag $FLAG. Ignoring."
                         ;;
@@ -83,79 +77,23 @@ function AreArgsValid() {
             done
         else
             FLAGS_FINISHED=1
-            if [ -z $SUBCMD ]; then
-                Debug "Subcommand is $ARG"
-                SUBCMD=$ARG
-            else
-                Debug "Target is $ARG"
-                TARGET=$ARG
-            fi
         fi
     done
-
-    # Subcommand is required
-    if ! containsElement $SUBCMD $SUPPORTED_CMDS ; then
-        Debug "$SUBCMD not in $SUPPORTED_CMDS"
-        echo "Invalid subcommand."
-        RetVal=$ERROR_CODE_INVALID_ARGS;
-    fi
-
-    # Check for valid target
-    if [[ ! -z ${SUBCMD} ]] && ! containsElement $TARGET $SUPPORTED_TARGETS ; then
-        Debug "$TARGET is not in $SUPPORTED_TARGETS";
-        echo "Invalid target."
-        RetVal=$ERROR_CODE_INVALID_ARGS;
-    fi
-
     return $RetVal;
 }
 
+
 #
-# Sets PLATFORM to be a one-word string defining operating system.
-# @depends SUPPORTED_OS String of space-separated supported 
-#           operating systems.
-#
-DetectPlatform() {
+# Print helpful Usage message for user.
+# 
+PrintUsage() {
+cat << UsagePrint
+echo "Usage: shoefiles <subcommand> <target>"
+echo "Supported subcommands: $SUPPORTED_CMDS"
+echo "Supported packages: $SUPPORTED_PKGS"
+echo "Supported groups: $SUPPORTED_GROUPS"
+UsagePrint
 
-    Debug "Let's see whatcha got here..."
-    RetVal=$ERROR_CODE_NONE
-
-    # Get *nix distro
-    DISTRO_RAW="" # Gets raw os output
-    DISTRO_RAW_LOC=`echo /etc/*-release` 2> /dev/null
-
-    # If DISTRO_RAW_LOC still contains the '*' (didn't use regex) empty DISTRO_RAW_LOC
-    if [[ "$DISTRO_RAW_LOC" == "/etc/*-release" ]]; then
-        DISTRO_RAW_LOC="";
-    fi
-
-    # get contents of uname or lsb-release
-    if [[ "$DISTRO_RAW_LOC" != "" ]]; then
-        DISTRO_RAW=$(cat /etc/*-release 2> /dev/null)
-    else
-        DISTRO_RAW=$(uname)
-    fi
-
-    Debug "Raw distro output: $DISTRO_RAW"
-
-    # Parses out specific distro
-    for OS in $SUPPORTED_OS; do 
-        Debug "Checking for $OS..."
-        PLATFORM=$(echo $DISTRO_RAW | grep -o "$OS" | head -1)
-        Debug "Platform is currently $PLATFORM"
-        [[ ! -z ${PLATFORM} ]] && break;
-    done
-
-    # Report error 
-    Debug "Platform is $PLATFORM"
-    if [[ -z $PLATFORM && CONFIG_ONLY -eq 0 ]]; then
-        RetVal=$ERROR_CODE_FAILURE 
-        echo "Welp. We don't have your back this time fam. OS not supported." 
-        echo "To set up dotfiles without package installation,"
-        echo "re-run shoefiles with the -l flag."
-    fi
-
-    return $RetVal
 }
 
 #
@@ -202,7 +140,7 @@ ConfigureDotfilesDir() {
     # If the repo is not the final location and the final location exists
     if  [ -d "$DOTFILES_DIR"  ]; then
         # Move existing dotfiles dir to a backup dir
-        # A link will not be moved (@todo why did I write this?)
+        # A link will not be moved 
         mkdir -pv "$BACKUP_DIR"
         mv -v "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
     fi
@@ -251,12 +189,38 @@ fi
 }
 
 #
+# $0 Source folder
+# $1 Destination folder (into which source should be installed)
+InstallDir() {
+
+    SOURCE_DIR = "$0"
+    TARGET_DIR = "$1"
+
+    for NEW_FILE_PATH in $(find $SOURCE_DIR -d 1); do
+
+        # If file, just install it
+        [ -f $NEW_FILE_PATH ] && 
+            InstallFiles $DOTFILES_DIR/$NEW_FILE $TARGET_DIR;
+
+        # If directory, create the destination if it doesn't exist, and
+        # make recursive call
+        if [ -d $NEW_FILE_PATH ]; then
+            NEW_FOLDER_PATH = "$TARGET_DIR/$(basename $NEW_FILE_PATH)";
+            mkdir -p $NEW_FOLDER_PATH;
+            InstallDir "$NEW_FILE_PATH" "$NEW_FOLDER_PATH";
+        fi;
+
+    done;
+
+}
+
+#
 # InstallFiles
 # Installs the passed file or directory into the passed location, 
 # backing up the file already at the destination if it exists.
 # The passed destination is assumed to be prepended with $HOME
-# @param $1 Path to new source file to install
-# @param $2 Destination path, filename or target NOT included
+# @param $0 Path to new source file to install
+# @param $1 Destination path, filename or target NOT included
 # @depends HOME
 # @depends DOTFILES_BACKUP Storage location for any existing dotfiles
 # @depends PKG_DIR Directory of configuration files to be linked from $HOME
@@ -275,7 +239,6 @@ InstallFiles() {
 
     Debug "Looking to install $NEW_FILE_PATH at $DEST_PATH"
     Debug "File name itself is $NEW_FILE_NAME"
-
 
     # Check if file exists at destination
     if [ -e "$DEST_PATH/$NEW_FILE_NAME" -o -L "$DEST_PATH/$NEW_FILE_NAME" ]; 
@@ -341,61 +304,5 @@ InstallFiles() {
         ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME" 
     fi
 
-    return $RETVAL
-}
-
-#
-# RunPackageOp
-# Sources package scripts and runs the passed operation
-# @param $1 Package operation
-# @param $2 Name of package to install
-# @depends $DOTFILES_DIR Root directory of dotfiles repo
-# 
-RunPackageOp () {
-
-    PKG_OP=$1
-    PKG_NAME=$2
-    RETVAL=$ERROR_CODE_NONE
-    PKG_DIR="${DOTFILES_DIR}/packages/${PKG_NAME}"
-    Debug "Using $PKG_DIR for $PKG"
-
-    # Verify required script exists
-    PKG_SCRIPT="${PKG_DIR}/${PKG_NAME}.sh"
-    if [ ! -f "$PKG_SCRIPT" ]; then
-        RETVAL=$ERROR_CODE_INVALID_ARGS
-        echo "Checked: $PKG_SCRIPT"
-        echo "Invalid package name provided."
-    else
-        # Source package script
-        # All should include definitions for:
-        # Install, Configure[, Update, Uninstall ]
-        source "$PKG_SCRIPT"
-        Debug "Entering command selection majigger"
-        ## Execute appropriate action
-        case $PKG_OP in
-            "install")
-                Debug "Subcommand was $PKG_OP"
-                RETVAL=0
-                if [ $CONFIG_ONLY == 0 ]; then
-                    Install
-                    RETVAL=$?
-                fi
-                [ $RETVAL == 0 ] && Configure && RETVAL=$?
-            ;;
-            "update")
-                Debug "Subcommand was $PKG_OP"
-                Update
-            ;;
-            "uninstall")
-                Debug "Subcommand was $PKG_OP"
-                Uninstall
-            ;;
-            *)
-                echo "Invalid sub-command $PKG_OP."
-                echo "If you see this message, you goofed quite badly."
-            ;;
-        esac
-    fi
-    unset -f Install Configure Update Uninstall
     return $RETVAL
 }

@@ -114,7 +114,7 @@ map j gj
 map k gk
 
 
-let g:python2_host_prog = '%python-path%'
+"let g:python2_host_prog = '%python-path%'
 
 " Load plugins
 if filereadable(expand("~/.config/nvim/vundle.vim"))
