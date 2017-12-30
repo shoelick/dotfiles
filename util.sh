@@ -102,11 +102,11 @@ ConfigureDotfilesDir() {
     fi
 
     cd "$HOME"
+    mkdir -pv "$BACKUP_DIR"
     # If the repo is not the final location and the final location exists
     if  [ -d "$DOTFILES_DIR"  ]; then
         # Move existing dotfiles dir to a backup dir
         # A link will not be moved 
-        mkdir -pv "$BACKUP_DIR"
         mv -v "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
     fi
 
