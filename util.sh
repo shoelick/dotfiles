@@ -161,7 +161,7 @@ InstallDir() {
     local SOURCE_DIR="$1"
     local TARGET_DIR="$2"
 
-    for NEW_FILE_PATH in $(find $SOURCE_DIR -d 1); do
+    for NEW_FILE_PATH in $(find $SOURCE_DIR -depth 1); do
 
 	echo "Installing $NEW_FILE_PATH to $TARGET_DIR";
 
