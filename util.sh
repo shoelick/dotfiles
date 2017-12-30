@@ -5,18 +5,6 @@
 ###############################################################################
 
 #
-# containsElement
-# $1 - Search element
-# $2 - List
-# Returns 1 if the search element is contained with the list
-#
-containsElement () {
-    local e
-    for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
-    return 1
-}
-
-#
 # Debug
 # $1 Debug string
 # Prints the passed debug string if the $DEBUG is set
@@ -29,23 +17,13 @@ Debug () {
 
 }
 
-#
-# Print helpful Usage message for user.
-# 
-PrintUsage() {
-cat << UsagePrint
-echo "Usage: shoefiles [-v]"
--v verbose output
-UsagePrint
-
-}
 
 ## AreArgsValid <Passed parameters array>
 # Returns 0 if the passed arguments are valid based on shoesfiles 
 # configuration.
 function AreArgsValid() {
 
-    RetVal=$ERROR_CODE_NONE
+    RetVal=0
 
     # Used to know when we're no longer parsing flags
     FLAGS_FINISHED=0
@@ -84,19 +62,6 @@ function AreArgsValid() {
 
 
 #
-# Print helpful Usage message for user.
-# 
-PrintUsage() {
-cat << UsagePrint
-echo "Usage: shoefiles <subcommand> <target>"
-echo "Supported subcommands: $SUPPORTED_CMDS"
-echo "Supported packages: $SUPPORTED_PKGS"
-echo "Supported groups: $SUPPORTED_GROUPS"
-UsagePrint
-
-}
-
-#
 # Set up and move .dotfiles directory
 # The back up directory does NOT exist by default.
 # Its presence indicates an existing backup.
@@ -106,14 +71,14 @@ UsagePrint
 # 
 ConfigureDotfilesDir() {
 
-    RETVAL=$ERROR_CODE_NONE
+    RETVAL=0
     CONTINUE=1
     BACKUP_DIR=$DOTFILES_REPO_DIR/dotfiles.backup
 
     # If we are running from final destination, no worries.
     if [ "$DOTFILES_REPO_DIR" = "$DOTFILES_DIR" ]; then
         Debug "Already in final destination. Not moving."
-        return $ERROR_CODE_NONE;
+        return 0;
 
         # Otherwise, check if final destination exists
     elif [ -e "$DOTFILES_DIR" ]; then
@@ -130,7 +95,7 @@ ConfigureDotfilesDir() {
     # Exit if user told us to.
     if [ $CONTINUE -eq 0 ]; then
         echo "Delete existing backup and try again." 
-        return $ERROR_CODE_FAILURE
+        return 1
         # Make sure the backup dir doesn't exist
     else 
         [ -d "$BACKUP_DIR" ] && echo "Deleting $BACKUP_DIR" && rm -r "$BACKUP_DIR"
@@ -193,19 +158,21 @@ fi
 # $1 Destination folder (into which source should be installed)
 InstallDir() {
 
-    SOURCE_DIR = "$0"
-    TARGET_DIR = "$1"
+    local SOURCE_DIR="$1"
+    local TARGET_DIR="$2"
 
     for NEW_FILE_PATH in $(find $SOURCE_DIR -d 1); do
 
+	echo "Installing $NEW_FILE_PATH to $TARGET_DIR";
+
         # If file, just install it
         [ -f $NEW_FILE_PATH ] && 
-            InstallFiles $DOTFILES_DIR/$NEW_FILE $TARGET_DIR;
+            InstallFiles $NEW_FILE_PATH $TARGET_DIR;
 
         # If directory, create the destination if it doesn't exist, and
         # make recursive call
         if [ -d $NEW_FILE_PATH ]; then
-            NEW_FOLDER_PATH = "$TARGET_DIR/$(basename $NEW_FILE_PATH)";
+            NEW_FOLDER_PATH="$TARGET_DIR/$(basename $NEW_FILE_PATH)";
             mkdir -p $NEW_FOLDER_PATH;
             InstallDir "$NEW_FILE_PATH" "$NEW_FOLDER_PATH";
         fi;
@@ -230,7 +197,7 @@ InstallDir() {
 #
 InstallFiles() {
 
-    RETVAL=$ERROR_CODE_NONE
+    RETVAL=0
     NEW_FILE_PATH="$1" # Location of original source file
     NEW_FILE_NAME=$(basename "$NEW_FILE_PATH")
     DEST_PATH=$2 
@@ -285,7 +252,7 @@ InstallFiles() {
                 rm -r "$BACKUP_DIR/$NEW_FILE_NAME"
             else 
                 echo "Take care of existing backup or destination and try again." 
-                RETVAL=$ERROR_CODE_FAILURE
+                RETVAL=1
             fi
         fi
     fi 

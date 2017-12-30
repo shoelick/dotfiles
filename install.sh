@@ -17,15 +17,16 @@ main() {
     export DOTFILES_DIR="$HOME/.dotfiles"
     export DOTFILES_BACKUP=
 
-    source "$DOTFILES_REPO_DIR/shoes/util.sh"
-    source "$DOTFILES_REPO_DIR/shoes/shoes.conf"
+    source "$DOTFILES_REPO_DIR/util.sh"
+
+    AreArgsValid "$@"
 
     #
     # Move dotfiles to final location
     #
     ConfigureDotfilesDir
     RetVal=$?
-    [ $RetVal -gt $ERROR_CODE_NONE ] && return $RetVal;
+    [ $RetVal -gt 0 ] && return $RetVal;
 
     # Install global gitignore
     #InstallFiles "$DOTFILES_DIR/shoes/.gitignore_global" "$HOME"
@@ -33,8 +34,7 @@ main() {
     #
     # Installation
     #
-
-	InstallDir $DOTFILES_DIR/config $HOME
+    InstallDir "$DOTFILES_DIR/configs" $HOME;
 
     #
     # Configuration
