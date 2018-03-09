@@ -35,6 +35,9 @@ main() {
     # Installation
     #
     InstallDir "$DOTFILES_DIR/configs" $HOME;
+    git clone https://github.com/VundleVim/Vundle.vim.git \
+        ~/.config/nvim/bundle/vundle
+    echo "Don't forget to install neovim and run :PluginInstall"
 
     #
     # Configuration
