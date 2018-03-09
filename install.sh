@@ -67,6 +67,7 @@ main() {
         git config --global user.name $INPUT
     fi
 
+    git config --global core.editor "vim"
 
     echo "Done."
     return $RetVal
