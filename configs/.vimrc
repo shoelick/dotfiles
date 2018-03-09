@@ -32,7 +32,7 @@ set scrolloff=4                 "Makes cursor stay 8 lines away from screen edge
 set tabstop=4 shiftwidth=4 expandtab
 
 nnoremap <Leader>rtw :%s/\s\+$//e<CR>
-
+colorscheme darkblue
 """"""""""""""""""""""""""""""""""""""""""""""""" HIGHLIGHTING
 
 " match ErrorMsg '\s\+$'
@@ -148,6 +148,7 @@ augroup spell_check
 augroup END
 
 autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+autocmd BufNewFile,BufRead Jenkinsfile  set filetype:groovy
 
 function! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -158,3 +159,29 @@ endfun
 
 " Using file extension
 autocmd BufWritePre *.h,*.c,*.java,*.cpp :call <SID>StripTrailingWhitespaces()
+
+let g:go_version_warning = 0
+
+" Plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'vim-airline/vim-airline'
+Plug 'fatih/vim-go'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'vim-syntastic/syntastic'
+
+" Initialize plugin system
+call plug#end()
+
+" Quit vim if the only thing open is nerdtree 
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Open Nerdtree with ctrl n 
+map <C-n> :NERDTreeToggle<CR>
+
+let g:airline_powerline_fonts = 1
+
+" Vim-go
+let g:go_metalinter_deadline = "5s"
+"autocmd InsertLeave *.go GoMetaLinter
+"autocmd InsertLeave *.go GoMetaLinter|<c-w><c-p>

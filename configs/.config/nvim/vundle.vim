@@ -1,17 +1,10 @@
 " ========================================
-" Vim plugin configuration
+" NVim Plugin Specification
 " ========================================
-"
-" This file contains the list of plugin installed using vundle plugin manager.
-" Once you've updated the list of plugin, you can run vundle update by issuing
-" the command :BundleInstall from within vim or directly invoking it from the
-" command line with the following syntax:
-" vim --noplugin -u vim/vundles.vim -N "+set hidden" "+syntax on" +BundleClean! +BundleInstall +qall
 
-" Filetype off is required by vundle
-filetype off
+" set the runtime path to include Vundle and initialize
+set rtp+=$HOME/.config/nvim/bundle/Vundle.vim/
 
-set rtp+=$HOME/.config/nvim/bundle/vundle/
 call vundle#begin("$HOME/.config/nvim/bundle")
 
 " let Vundle manage Vundle (required)
@@ -38,7 +31,7 @@ Plugin 'mxw/vim-jsx'
 "Plugin 'Valloric/MatchTagAlways'
 
 " Colorscheme
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'ajmwagar/vim-deus'
 
 " Linting
 Bundle 'scrooloose/syntastic'
@@ -62,10 +55,62 @@ if filereadable(expand("~/.config/nvim/vhdl.vim"))
     source ~/.config/nvim/vhdl.vim
 endif
 
-" Tags
 Plugin 'ctrlpvim/ctrlp.vim'
+
+" Tags
+Plugin 'vim-scripts/taglist.vim'
+
+" Extra support for Golang
+Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
+" Automatically update tag files
+Plugin 'craigemery/vim-autotag'
 
 call vundle#end()
 
-"Filetype plugin indent on is required by vundle
-filetype plugin indent on
+" ========================================
+" Plugin configuration
+" ========================================
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+
+" vim-jsx settings
+let g:jsx_ext_required = 0
+
+
+" Quick scope 
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+" ctrlp
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\v\.(exe|so|dll)$',
+            \ 'link': 'some_bad_symbolic_links',
+            \ }
+
+" nerdtree
+let NERDTreeShowHidden=1
+let NERDTreeSortOrder=['[\/]$', '*']
+let NERDTreeIgnore=['.*\.swp$', '.*\.swo$',]
+
+" Open Nerdtree with ctrl n 
+map <C-n> :NERDTreeToggle<CR>
+
+" vim-go
+" automatically fix imports
+let g:go_fmt_command = "goimports" 
+let g:go_list_type = "quickfix"
+let g:go_metalinter_autosave = 1
+
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+
+"nnoremap <silent> <F4> :TlistToggle<CR>

@@ -76,7 +76,7 @@ source $ZSH/oh-my-zsh.sh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Default user -- causes username to be hidden in PS1
-export DEFAULT_USER='mxs9342'
+export DEFAULT_USER='mshullick'
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -86,7 +86,8 @@ export DEFAULT_USER='mxs9342'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-[ ! -z $(which nvim) ] && alias vim="nvim"
+[ ! -z $(which nvim) ] && alias vim="nvim" && alias view="nvim -R"
+alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
 
@@ -101,4 +102,8 @@ export ANDROID_HOME=~/Library/Android/sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools
 export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 #eval "$(pyenv init -)"
-export PATH=/home/mxs9342/bin:$PATH
+export PATH=/home/mshullick/go/bin:$PATH
+
+function cd {
+    builtin cd "$@" && ls
+}
