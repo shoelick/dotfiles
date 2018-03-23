@@ -72,6 +72,11 @@ main() {
     echo "Done."
     return $RetVal
 
+    # Perfom modification to agnoster theme
+    # Changes PS1 to show up to 3 directories up from pwd
+    # The single '' after -i makes the command macOS-safe
+    sed -i '' -e "s/blue black '%\~'/blue black '%3\~'/g" \
+        "${HOME}/.oh-my-zsh/themes/agnoster.zsh-theme" 2>/dev/null
 } 
 
 main $@

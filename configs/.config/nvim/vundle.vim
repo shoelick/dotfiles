@@ -66,6 +66,9 @@ Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 " Automatically update tag files
 Plugin 'craigemery/vim-autotag'
 
+" ROS support
+Plugin 'taketwo/vim-ros'
+
 call vundle#end()
 
 " ========================================

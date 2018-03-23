@@ -107,3 +107,8 @@ export PATH=/home/mshullick/go/bin:$PATH
 function cd {
     builtin cd "$@" && ls
 }
+
+# ROS environment variables
+
+source /opt/ros/kinetic/setup.zsh
+source ${HOME}/Documents/catkin_ws/devel/setup.zsh
