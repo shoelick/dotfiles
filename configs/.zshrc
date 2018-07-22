@@ -112,5 +112,5 @@ export PATH=/usr/local/anaconda3/bin:"$PATH"
 
 # ROS environment variables
 
-source /opt/ros/kinetic/setup.zsh
-source ${HOME}/Documents/catkin_ws/devel/setup.zsh
+#source /opt/ros/kinetic/setup.zsh
+#source ${HOME}/Documents/catkin_ws/devel/setup.zsh
