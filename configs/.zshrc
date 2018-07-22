@@ -108,6 +108,8 @@ function cd {
     builtin cd "$@" && ls
 }
 
+export PATH=/usr/local/anaconda3/bin:"$PATH"
+
 # ROS environment variables
 
 source /opt/ros/kinetic/setup.zsh
