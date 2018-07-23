@@ -45,7 +45,8 @@ set hidden
 " Tabs to spaces
 set tabstop=4 shiftwidth=4 expandtab
 
-"nnoremap <Leader>rtw :%s/\s\+$//e<CR>
+" Delete trailing whitespaces on file write
+autocmd BufWritePre * %s/\s\+$//e
 
 """"""""""""""""""""""""""""""""""""""""""""""""" HIGHLIGHTING
 
