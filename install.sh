@@ -11,7 +11,7 @@ main() {
 
     # Set to 1 for debugging argument parsing or earlier
     # Otherwise use -v for debugging
-    export DEBUG_OUTPUT=0 
+    export DEBUG_OUTPUT=0
 
     export DOTFILES_REPO_DIR="$( \cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     export DOTFILES_DIR="$HOME/.dotfiles"
@@ -21,20 +21,21 @@ main() {
 
     AreArgsValid "$@"
 
+    prereqs_installed && exit 1
+
     #
     # Move dotfiles to final location
     #
-    ConfigureDotfilesDir
-    RetVal=$?
-    [ $RetVal -gt 0 ] && return $RetVal;
-
-    # Install global gitignore
-    #InstallFiles "$DOTFILES_DIR/shoes/.gitignore_global" "$HOME"
+    ConfigureDotfilesDir || return $RetVal;
 
     #
     # Installation
     #
+
+    # Grab all configs and link them
     InstallDir "$DOTFILES_DIR/configs" $HOME;
+
+    # Install necessary dependencies
     git clone https://github.com/VundleVim/Vundle.vim.git \
         ~/.config/nvim/bundle/vundle
     echo "Don't forget to install neovim and run :PluginInstall"
@@ -77,7 +78,7 @@ main() {
     # The single '' after -i makes the command macOS-safe
     sed -i '' -e "s/blue black '%\~'/blue black '%3\~'/g" \
         "${HOME}/.oh-my-zsh/themes/agnoster.zsh-theme" 2>/dev/null
-} 
+}
 
 main $@
 #cd .

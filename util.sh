@@ -11,7 +11,7 @@
 #
 Debug () {
 
-    if [ "${DEBUG_OUTPUT}" -eq 1 ] ; then 
+    if [ "${DEBUG_OUTPUT}" -eq 1 ] ; then
         echo "DEBUG: $@"
     fi
 
@@ -19,7 +19,7 @@ Debug () {
 
 
 ## AreArgsValid <Passed parameters array>
-# Returns 0 if the passed arguments are valid based on shoesfiles 
+# Returns 0 if the passed arguments are valid based on shoesfiles
 # configuration.
 function AreArgsValid() {
 
@@ -68,7 +68,7 @@ function AreArgsValid() {
 # @depends HOME
 # @depends DOTFILES_REPO_DIR Location of the repository
 # @depends DOTFILES_DIR Final destination
-# 
+#
 ConfigureDotfilesDir() {
 
     RETVAL=0
@@ -87,17 +87,17 @@ ConfigureDotfilesDir() {
         # Check if backup directory exists
         if [ -e "$BACKUP_DIR" ]; then
             echo -e "!!! WARNING !!!"
-            PROMPT="$DOTFILES_REPO_DIR/dotfiles.backup exists. Obliterate backup directory? " 
+            PROMPT="$DOTFILES_REPO_DIR/dotfiles.backup exists. Obliterate backup directory? "
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi
     fi
 
     # Exit if user told us to.
     if [ $CONTINUE -eq 0 ]; then
-        echo "Delete existing backup and try again." 
+        echo "Delete existing backup and try again."
         return 1
         # Make sure the backup dir doesn't exist
-    else 
+    else
         [ -d "$BACKUP_DIR" ] && echo "Deleting $BACKUP_DIR" && rm -r "$BACKUP_DIR"
     fi
 
@@ -106,7 +106,7 @@ ConfigureDotfilesDir() {
     # If the repo is not the final location and the final location exists
     if  [ -d "$DOTFILES_DIR"  ]; then
         # Move existing dotfiles dir to a backup dir
-        # A link will not be moved 
+        # A link will not be moved
         mv -v "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
     fi
 
@@ -130,7 +130,7 @@ DONE=0
 while [ ! $DONE = 1 ]; do
     read -p "$1 [Y/n]: " INPUT; # prompt
     INPUT=$(echo "$INPUT" | tr '[A-Z]' '[a-z]') # make lowercase
-    [[ ( $INPUT = "y" || $INPUT = "n" ) ]] && DONE=1 
+    [[ ( $INPUT = "y" || $INPUT = "n" ) ]] && DONE=1
 done;
 [[ $INPUT = "n" ]] # logic's a bitch
 echo $?
@@ -147,7 +147,7 @@ DONE=0
 while [ ! $DONE = 1 ]; do
     read -p "$1" INPUT; # prompt
     if [[ "$INPUT" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$ ]]; then
-    DONE=1     
+    DONE=1
 fi
     done
     echo $INPUT;
@@ -166,7 +166,7 @@ InstallDir() {
 	echo "Installing $NEW_FILE_PATH to $TARGET_DIR";
 
         # If file, just install it
-        [ -f $NEW_FILE_PATH ] && 
+        [ -f $NEW_FILE_PATH ] &&
             InstallFiles $NEW_FILE_PATH $TARGET_DIR;
 
         # If directory, create the destination if it doesn't exist, and
@@ -183,7 +183,7 @@ InstallDir() {
 
 #
 # InstallFiles
-# Installs the passed file or directory into the passed location, 
+# Installs the passed file or directory into the passed location,
 # backing up the file already at the destination if it exists.
 # The passed destination is assumed to be prepended with $HOME
 # @param $0 Path to new source file to install
@@ -192,7 +192,7 @@ InstallDir() {
 # @depends DOTFILES_BACKUP Storage location for any existing dotfiles
 # @depends PKG_DIR Directory of configuration files to be linked from $HOME
 #
-# @note While reading what this function does, remember that a directory is 
+# @note While reading what this function does, remember that a directory is
 # also a type of file
 #
 InstallFiles() {
@@ -200,7 +200,7 @@ InstallFiles() {
     RETVAL=0
     NEW_FILE_PATH="$1" # Location of original source file
     NEW_FILE_NAME=$(basename "$NEW_FILE_PATH")
-    DEST_PATH=$2 
+    DEST_PATH=$2
     BACKUP_DIR="$DOTFILES_REPO_DIR/dotfiles.backup"
     CONTINUE=1
 
@@ -208,14 +208,14 @@ InstallFiles() {
     Debug "File name itself is $NEW_FILE_NAME"
 
     # Check if file exists at destination
-    if [ -e "$DEST_PATH/$NEW_FILE_NAME" -o -L "$DEST_PATH/$NEW_FILE_NAME" ]; 
+    if [ -e "$DEST_PATH/$NEW_FILE_NAME" -o -L "$DEST_PATH/$NEW_FILE_NAME" ];
     then
 
         # account for when destination exists and already is symlink to dotfiles
         if [ -L "$DEST_PATH/$NEW_FILE_NAME" ]; then
             Debug "Link exists at $DEST_PATH/$NEW_FILE_NAME..."
             LINKPATH=$(readlink "$DEST_PATH/$NEW_FILE_NAME")
-            if [ $LINKPATH = $NEW_FILE_PATH ]; then 
+            if [ $LINKPATH = $NEW_FILE_PATH ]; then
                 Debug "File is already installed."
                 CONTINUE=0
             fi
@@ -225,42 +225,42 @@ InstallFiles() {
             # necssary
             if [ ! -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
                 echo "WARNING: broken symlink exists at destination $DEST_PATH/$NEW_FILE_NAME"
-                PROMPT="Can I delete it? " 
+                PROMPT="Can I delete it? "
                 DELETE_BROKEN_LINK=$(BoolPrompt "$PROMPT")
                 if [ $DELETE_BROKEN_LINK -eq 1 ]; then
                     echo "Deleting broken link: $DEST_PATH/$NEW_FILE_NAME"
-                    rm $DEST_PATH/$NEW_FILE_NAME 
-                else 
+                    rm $DEST_PATH/$NEW_FILE_NAME
+                else
                     echo "Stopping neovim install. Please fix/remove broken link and try again."
                     CONTINUE=0
                 fi
             fi
-        fi 
+        fi
 
         # Check if file with this name already exists in backup
         if [ $CONTINUE -eq 1 ] && [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
             echo -e "!!! WARNING !!!"
-            PROMPT="$BACKUP_DIR/$NEW_FILE_NAME exists. Obliterate backup? " 
+            PROMPT="$BACKUP_DIR/$NEW_FILE_NAME exists. Obliterate backup? "
             CONTINUE=$(BoolPrompt "$PROMPT")
-        fi 
+        fi
 
         # Delete backup if directed and necessary
-        Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..." 
+        Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..."
         if  [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
             if [ $CONTINUE -eq 1 ]; then
                 echo "Deleting $BACKUP_DIR/$NEW_FILE_NAME"
                 rm -r "$BACKUP_DIR/$NEW_FILE_NAME"
-            else 
-                echo "Take care of existing backup or destination and try again." 
+            else
+                echo "Take care of existing backup or destination and try again."
                 RETVAL=1
             fi
         fi
-    fi 
+    fi
 
     # Exit if user told us to
     if [ $CONTINUE -eq 1 ]; then
 
-        # Back up 
+        # Back up
         Debug "Seeing if $DEST_PATH/$NEW_FILE_NAME exists..."
         if [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
             Debug "Moving existing $DEST_PATH/$NEW_FILE_NAME to $BACKUP_DIR"
@@ -268,8 +268,21 @@ InstallFiles() {
         fi
 
         # Install
-        ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME" 
+        ln -sv "$NEW_FILE_PATH" "$DEST_PATH/$NEW_FILE_NAME"
     fi
 
     return $RETVAL
+}
+
+prereqs_installed() {
+
+    cat << EOF
+Are all of the following installed?
+- NVIM
+- zsh & oh-my-zsh
+- ctags (exuberant)
+EOF
+
+    return $(BoolPrompt)
+
 }
