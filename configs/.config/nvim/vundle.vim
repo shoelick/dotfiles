@@ -32,6 +32,7 @@ Plugin 'mxw/vim-jsx'
 
 " Colorscheme
 Plugin 'ajmwagar/vim-deus'
+Plugin 'ajmwagar/lightline-deus' " Matching color scheme
 
 " Linting
 Bundle 'scrooloose/syntastic'
@@ -69,6 +70,11 @@ Plugin 'craigemery/vim-autotag'
 " ROS support
 Plugin 'taketwo/vim-ros'
 
+" Show open buffers
+Plugin 'bling/vim-bufferline'
+
+
+
 call vundle#end()
 
 " ========================================
@@ -84,7 +90,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:jsx_ext_required = 0
 
 
-" Quick scope 
+" Quick scope
 " Trigger a highlight in the appropriate direction when pressing these keys:
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
@@ -101,12 +107,12 @@ let NERDTreeShowHidden=1
 let NERDTreeSortOrder=['[\/]$', '*']
 let NERDTreeIgnore=['.*\.swp$', '.*\.swo$',]
 
-" Open Nerdtree with ctrl n 
+" Open Nerdtree with ctrl n
 map <C-n> :NERDTreeToggle<CR>
 
 " vim-go
 " automatically fix imports
-let g:go_fmt_command = "goimports" 
+let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"
 let g:go_metalinter_autosave = 1
 

@@ -34,13 +34,13 @@ set undolevels=1000             "Undo history
 set udf                         "Persistant undo across sessions
 set scrolloff=4                 "Makes cursor stay 8 lines away from the top or bottom
 
-" These two together cause search only to be case sensitive when a capital 
+" These two together cause search only to be case sensitive when a capital
 " letter is in the search
-set smartcase                   
-set ignorecase                  
+set smartcase
+set ignorecase
 
 "Hide buffer instead of closing it. Also disable buffering of empty files
-set hidden                                                      
+set hidden
 
 " Tabs to spaces
 set tabstop=4 shiftwidth=4 expandtab
@@ -114,7 +114,7 @@ noremap <Leader>i :exe "normal i".nr2char(getchar())<CR>
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 "stuff to ignore when tab completing
-set wildignore=*.o,*.obj,*~ 
+set wildignore=*.o,*.obj,*~
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
 set wildignore+=*DS_Store*
