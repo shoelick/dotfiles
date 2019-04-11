@@ -100,19 +100,20 @@ alias view="nvim -R"
 alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 
 # android development
-export ANDROID_HOME=~/Library/Android/sdk
-export PATH=${PATH}:${ANDROID_HOME}/tools
-export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+#export ANDROID_HOME=~/Library/Android/sdk
+#export PATH=${PATH}:${ANDROID_HOME}/tools
+#export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 #eval "$(pyenv init -)"
-export PATH=/home/mshullick/go/bin:$PATH
+#export PATH=/home/mshullick/go/bin:$PATH
 
 function cd {
     builtin cd "$@" && ls
 }
 
-export PATH=/usr/local/anaconda3/bin:"$PATH"
+# export PATH=/usr/local/anaconda3/bin:"$PATH"
 
 # ROS environment variables
 
-#source /opt/ros/kinetic/setup.zsh
-#source ${HOME}/Documents/catkin_ws/devel/setup.zsh
+export PATH=${PATH}:${HOME}/.local/bin
+source /opt/ros/melodic/setup.zsh
+source ${HOME}/Documents/catkin_ws/devel/setup.zsh
