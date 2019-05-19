@@ -1,5 +1,7 @@
 #!/usr/bin/expect -f
-spawn ~/shoelick/dotfiles/install.sh
+spawn "bash"
+expect "$ "
+send -- "./install.sh"
 expect -exact " \[Y\/n\]: "
 send -- "Y\n"
 expect -exact "Done."
