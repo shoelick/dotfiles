@@ -1,7 +1,7 @@
 language: bash
 
 before_script:
-    - sudo apt-get install neovim ctags
+    - sudo apt-get install ctags
 
 script:
     - bash test/tmux/test_tmux.sh
