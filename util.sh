@@ -91,7 +91,7 @@ ConfigureDotfilesDir() {
         # Check if backup directory exi
         if [ -e "$BACKUP_DIR" ]; then
             echo -e "!!! WARNING !!!"
-            PROMPT="$DOTFILES_DIR/dotfiles.backup exists. Obliterate backup directory? "
+            PROMPT="$BACKUP_DIR exists. Obliterate backup directory? "
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi
     fi
@@ -118,7 +118,6 @@ ConfigureDotfilesDir() {
     # Move repo to final destination
     mv -v "$DOTFILES_REPO_DIR" "$DOTFILES_DIR"
     cd "$HOME/.dotfiles"
-    DOTFILES_BACKUP="$DOTFILES_DIR/backup"
 
     return $RETVAL
 }
@@ -206,7 +205,6 @@ InstallFiles() {
     NEW_FILE_PATH="$1" # Location of original source file
     NEW_FILE_NAME=$(basename "$NEW_FILE_PATH")
     DEST_PATH=$2
-    BACKUP_DIR="$DOTFILES_REPO_DIR/dotfiles.backup"
     CONTINUE=1
 
     Debug "Looking to install $NEW_FILE_PATH at $DEST_PATH"
@@ -243,18 +241,18 @@ InstallFiles() {
         fi
 
         # Check if file with this name already exists in backup
-        if [ $CONTINUE -eq 1 ] && [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
+        if [ $CONTINUE -eq 1 ] && [ -e "$DOTFILES_BACKUP/$NEW_FILE_NAME" ]; then
             echo -e "!!! WARNING !!!"
-            PROMPT="$BACKUP_DIR/$NEW_FILE_NAME exists. Obliterate backup? "
+            PROMPT="$DOTFILES_BACKUP/$NEW_FILE_NAME exists. Obliterate backup? "
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi
 
         # Delete backup if directed and necessary
-        Debug "Seeing if $BACKUP_DIR/$NEW_FILE_NAME exists..."
-        if  [ -e "$BACKUP_DIR/$NEW_FILE_NAME" ]; then
+        Debug "Seeing if $DOTFILES_BACKUP/$NEW_FILE_NAME exists..."
+        if  [ -e "$DOTFILES_BACKUP/$NEW_FILE_NAME" ]; then
             if [ $CONTINUE -eq 1 ]; then
-                echo "Deleting $BACKUP_DIR/$NEW_FILE_NAME"
-                rm -r "$BACKUP_DIR/$NEW_FILE_NAME"
+                echo "Deleting $DOTFILES_BACKUP/$NEW_FILE_NAME"
+                rm -r "$DOTFILES_BACKUP/$NEW_FILE_NAME"
             else
                 echo "Take care of existing backup or destination and try again."
                 RETVAL=1
@@ -268,8 +266,8 @@ InstallFiles() {
         # Back up
         Debug "Seeing if $DEST_PATH/$NEW_FILE_NAME exists..."
         if [ -e "$DEST_PATH/$NEW_FILE_NAME" ]; then
-            Debug "Moving existing $DEST_PATH/$NEW_FILE_NAME to $BACKUP_DIR"
-            mv -v "$DEST_PATH/$NEW_FILE_NAME" "$BACKUP_DIR"
+            Debug "Moving existing $DEST_PATH/$NEW_FILE_NAME to $DOTFILES_BACKUP"
+            mv -v "$DEST_PATH/$NEW_FILE_NAME" "$DOTFILES_BACKUP"
         fi
 
         # Install
