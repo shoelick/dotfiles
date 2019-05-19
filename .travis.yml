@@ -2,7 +2,6 @@ language: bash
 
 before_script:
     - sudo apt-get install ctags
-    - cd shoelick/dotfiles
 
 script:
-    - bash test/tmux/test_tmux.sh
+    - bash tests/tmux/test_tmux.sh
