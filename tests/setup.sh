@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-DOTFILES_DIR="`pwd`/.."
+export DOTFILES_DIR="`pwd`/.."
