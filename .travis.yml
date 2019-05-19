@@ -4,4 +4,4 @@ before_script:
     - sudo apt-get install ctags expect
 
 script:
-    - source tests/tmux/test_tmux.sh
+    - source tests/linking/test_linking.sh
