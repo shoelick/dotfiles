@@ -114,6 +114,8 @@ function cd {
 
 # ROS environment variables
 
-export PATH=${PATH}:${HOME}/.local/bin
-source /opt/ros/melodic/setup.zsh
-source ${HOME}/Documents/catkin_ws/devel/setup.zsh
+#export PATH=${PATH}:${HOME}/.local/bin
+#source /opt/ros/melodic/setup.zsh
+#source ${HOME}/Documents/catkin_ws/devel/setup.zsh
+#export PATH="/usr/local/opt/ruby/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi

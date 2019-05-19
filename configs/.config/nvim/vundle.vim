@@ -68,7 +68,7 @@ Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plugin 'craigemery/vim-autotag'
 
 " ROS support
-Plugin 'taketwo/vim-ros'
+" Plugin 'taketwo/vim-ros'
 
 " Show open buffers
 Plugin 'bling/vim-bufferline'

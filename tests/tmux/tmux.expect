@@ -1,0 +1,5 @@
+#!/usr/bin/expect -f
+spawn ~/.dotfiles/install.sh
+expect -exact " \[Y\/n\]: "
+send -- "Y\n"
+expect -exact "Done."
