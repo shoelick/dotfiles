@@ -73,31 +73,36 @@ ConfigureDotfilesDir() {
 
     RETVAL=0
     CONTINUE=1
-    BACKUP_DIR=$DOTFILES_REPO_DIR/dotfiles.backup
+
+    # In this context
+    BACKUP_DIR=$DOTFILES_REPO_DIR/backup/dotfiles.old
 
     # If we are running from final destination, no worries.
     if [ "$DOTFILES_REPO_DIR" = "$DOTFILES_DIR" ]; then
         Debug "Already in final destination. Not moving."
         return 0;
 
-        # Otherwise, check if final destination exists
+    # Otherwise, check if final destination exists
     elif [ -e "$DOTFILES_DIR" ]; then
 
+        # Remember, we have non-final REPO DIR and currently old DOTFILES dir.
+        # We want to backup the old DOTFILES, and then move the repo dir into it
         Debug "Dotfiles directory exists and we're not in it."
-        # Check if backup directory exists
+        # Check if backup directory exi
         if [ -e "$BACKUP_DIR" ]; then
             echo -e "!!! WARNING !!!"
-            PROMPT="$DOTFILES_REPO_DIR/dotfiles.backup exists. Obliterate backup directory? "
+            PROMPT="$DOTFILES_DIR/dotfiles.backup exists. Obliterate backup directory? "
             CONTINUE=$(BoolPrompt "$PROMPT")
         fi
     fi
 
     # Exit if user told us to.
     if [ $CONTINUE -eq 0 ]; then
-        echo "Delete existing backup and try again."
+        echo "Deal with existing installation and/or backup and try again."
         return 1
-        # Make sure the backup dir doesn't exist
     else
+        # We'll get here regardless of an old dotfiles install; check it's there
+        # before trying to delete it
         [ -d "$BACKUP_DIR" ] && echo "Deleting $BACKUP_DIR" && rm -r "$BACKUP_DIR"
     fi
 
@@ -107,13 +112,13 @@ ConfigureDotfilesDir() {
     if  [ -d "$DOTFILES_DIR"  ]; then
         # Move existing dotfiles dir to a backup dir
         # A link will not be moved
-        mv -v "$HOME/.dotfiles" "$DOTFILES_REPO_DIR/dotfiles.backup"
+        mv -v "$HOME/.dotfiles" "$BACKUP_DIR"
     fi
 
     # Move repo to final destination
     mv -v "$DOTFILES_REPO_DIR" "$DOTFILES_DIR"
     cd "$HOME/.dotfiles"
-    DOTFILES_BACKUP="$DOTFILES_DIR/dotfiles.backup"
+    DOTFILES_BACKUP="$DOTFILES_DIR/backup"
 
     return $RETVAL
 }
