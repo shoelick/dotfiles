@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
 spawn "bash"
 expect "$ "
-send -- "./install.sh"
+send -- "./install.sh\n"
 expect -exact " \[Y\/n\]: "
 send -- "Y\n"
 expect -exact "Done."
