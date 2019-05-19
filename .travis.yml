@@ -4,4 +4,4 @@ before_script:
     - sudo apt-get install ctags
 
 script:
-    - bash tests/tmux/test_tmux.sh
+    - source tests/tmux/test_tmux.sh

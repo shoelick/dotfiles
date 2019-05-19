@@ -10,6 +10,7 @@ conf_file_path=~/.tmux.conf
 if [ ! -L $conf_file_path ]; then
     echo "No tmux conf link found"
     return 1
+else
+    echo "TEST: tmux config confirmed"
 fi
-echo "TEST: tmux config confirmed"
 
