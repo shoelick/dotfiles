@@ -1,5 +1,5 @@
 #!/usr/bin/expect -f
-spawn ./install.sh
+spawn ../../install.sh
 expect -exact " \[Y\/n\]: "
 send -- "Y\n"
 expect -exact "Done."
