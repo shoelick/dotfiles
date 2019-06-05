@@ -32,8 +32,10 @@ main() {
     # Installation
     #
 
+    [ -z $PREFIX ] && PREFIX=$HOME;
+
     # Grab all configs and link them
-    InstallDir "$DOTFILES_DIR/configs" $HOME;
+    InstallDir "$DOTFILES_DIR/configs" $PREFIX;
 
     # Install necessary dependencies
     git clone https://github.com/VundleVim/Vundle.vim.git \

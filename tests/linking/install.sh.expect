@@ -1,6 +1,8 @@
 #!/usr/bin/expect -f
 spawn "bash"
 expect "$ "
+send -- "echo $env(PREFIX)"
+expect "$ "
 send -- "./install.sh\n"
 expect -exact " \[Y\/n\]: "
 send -- "Y\n"
