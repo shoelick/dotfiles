@@ -4,4 +4,5 @@ before_script:
     - sudo apt-get install ctags expect
 
 script:
-    - source tests/linking/test_linking.sh
+    # This starts in the repo
+    - source tests/test_all.sh
