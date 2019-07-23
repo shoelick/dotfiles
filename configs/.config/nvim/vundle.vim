@@ -35,7 +35,8 @@ Plugin 'ajmwagar/vim-deus'
 Plugin 'ajmwagar/lightline-deus' " Matching color scheme
 
 " Linting
-Bundle 'scrooloose/syntastic'
+" Bundle 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
 
 " File exploring
 Bundle 'scrooloose/nerdtree'
@@ -123,6 +124,17 @@ map <C-n> :NERDTreeToggle<CR>
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"
 let g:go_metalinter_autosave = 1
+
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+" Highlight vars with same name
+let g:go_auto_sameids = 1
+let g:go_fmt_command = "goimports"
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
+
 
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')

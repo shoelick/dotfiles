@@ -86,7 +86,7 @@ export DEFAULT_USER='mshullick'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-[ ! -z $(which nvim) ] && alias vim="nvim" && alias view="nvim -R"
+[[ ! -z $(which nvim) ]] && alias vim="nvim" && alias view="nvim -R"
 alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
