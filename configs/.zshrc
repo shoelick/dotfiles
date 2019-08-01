@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$PATH:/usr/local/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -91,7 +92,6 @@ alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
 
-PATH=$PATH:/usr/local/bin
 
 # Make bash evaluate aliases after sudo
 # See AskUbuntu post here: <http://tinyurl.com/6azvksf>

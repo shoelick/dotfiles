@@ -33,7 +33,6 @@ set history=1000                "Command history
 set undolevels=1000             "Undo history
 set udf                         "Persistant undo across sessions
 set scrolloff=4                 "Makes cursor stay 8 lines away from the top or bottom
-set ffs=dos
 
 " These two together cause search only to be case sensitive when a capital
 " letter is in the search
