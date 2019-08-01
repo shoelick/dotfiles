@@ -3,7 +3,7 @@
 " ========================================
 
 " set the runtime path to include Vundle and initialize
-set rtp+=$HOME/.config/nvim/bundle/Vundle.vim/
+set rtp+=$HOME/.config/nvim/bundle/vundle
 
 call vundle#begin("$HOME/.config/nvim/bundle")
 
