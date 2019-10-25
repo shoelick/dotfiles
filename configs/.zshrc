@@ -98,13 +98,16 @@ alias tmux=" tmux -u"
 alias sudo="sudo "
 alias view="nvim -R"
 alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
+projcd() {
+    cd ~/Documents/projects/$1
+}
 
 # android development
 #export ANDROID_HOME=~/Library/Android/sdk
 #export PATH=${PATH}:${ANDROID_HOME}/tools
 #export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 #eval "$(pyenv init -)"
-#export PATH=/home/mshullick/go/bin:$PATH
+export PATH=$HOME/go/bin:/usr/local/go/bin:$PATH
 
 function cd {
     builtin cd "$@" && ls
@@ -119,3 +122,11 @@ function cd {
 #source ${HOME}/Documents/catkin_ws/devel/setup.zsh
 #export PATH="/usr/local/opt/ruby/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+export JFROG_CLI_OFFER_CONFIG=false
+export ARTIFACTORY_USERNAME=${USER}
+export ARTIFACTORY_PASSWORD=$(security find-generic-password -ga ${ARTIFACTORY_USERNAME} -s artifactory 2>&1 | grep ^password | awk -F'"' '{print $2}')
+export ARTIFACTORY_URL=https://artifactory.dev.teslamotors.com/artifactory
+
+export AWS_ACCESS_KEY_ID=AK0NSCNWCAAD30QP1KQA
+export AWS_SECRET_ACCESS_KEY=xRpSar4GlPCul8czMchp4/4YhTzl3zXpuK115c4Y
