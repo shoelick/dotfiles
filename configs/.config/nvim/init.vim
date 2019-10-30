@@ -31,7 +31,6 @@ set showmatch                   "Shows matching braces
 set shiftround                  "Round #indents to multiple of shiftwidth
 set history=1000                "Command history
 set undolevels=1000             "Undo history
-set udf                         "Persistant undo across sessions
 set scrolloff=4                 "Makes cursor stay 8 lines away from the top or bottom
 
 " These two together cause search only to be case sensitive when a capital
@@ -53,15 +52,11 @@ autocmd BufWritePre * %s/\s\+$//e
 " Matching parentheses
 hi MatchParen cterm=bold ctermbg=none ctermfg=34
 
-" Colored line numbers are better
-" This comes with colorscheme deus I think
-hi LineNr ctermfg=130 guifg=Brown
-
 " Enable colored line highlight
 set cursorline
 
 " Mark line length limit
-set colorcolumn=80
+" set colorcolumn=80
 
 """"""""""""""""""""""""""""""""""""""""""""""""" COLORS
 colorscheme deus
@@ -89,7 +84,6 @@ if has('persistent_undo')
     set undodir=~/.config/nvim/undo
     set undofile
 endif
-
 
 " netrw (built-in filebrowser)
 let g:netrw_liststyle=3         "List styles for file explorer
@@ -153,4 +147,5 @@ function! <SID>StripTrailingWhitespaces()
 endfun
 autocmd BufWritePre *.h,*.c,*.java,*.cpp,*.go,*.js :call <SID>StripTrailingWhitespaces()
 
+" Max memory to use in pattern matching, in KBs
 set mmp=5000

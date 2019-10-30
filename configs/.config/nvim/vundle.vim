@@ -11,8 +11,10 @@ call vundle#begin("$HOME/.config/nvim/bundle")
 Plugin 'VundleVim/Vundle.vim'
 
 " Generic
-Bundle "itchyny/lightline.vim"
-Bundle "tpope/vim-fugitive"
+Plugin 'itchyny/lightline.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-gitgutter'
+
 "Plugin 'unblevable/quick-scope'
 
 " Completion & snippets
@@ -35,12 +37,12 @@ Plugin 'ajmwagar/vim-deus'
 Plugin 'ajmwagar/lightline-deus' " Matching color scheme
 
 " Linting
-" Bundle 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 Plugin 'w0rp/ale'
 
 " File exploring
-Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 
 " Load LaTeX if installed
 if filereadable(expand("~/.config/nvim/latex.vim"))
@@ -124,6 +126,8 @@ map <C-n> :NERDTreeToggle<CR>
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"
 let g:go_metalinter_autosave = 1
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
@@ -132,6 +136,7 @@ au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 " Highlight vars with same name
 let g:go_auto_sameids = 1
 let g:go_fmt_command = "goimports"
+
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 

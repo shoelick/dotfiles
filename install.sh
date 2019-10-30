@@ -72,6 +72,9 @@ main() {
 
     git config --global core.editor "vim"
 
+    # Create a local ZSH config for things we don't want to have versioned
+    cp $DOTFILES_DIR/zsh_localrc ~/.zshlocalrc
+
     echo "Done."
     return $RetVal
 

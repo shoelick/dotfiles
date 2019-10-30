@@ -92,13 +92,16 @@ alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
 
+[[ -e $HOME/.zshlocalrc ]] && source $HOME/.zshlocalrc
 
 # Make bash evaluate aliases after sudo
 # See AskUbuntu post here: <http://tinyurl.com/6azvksf>
 alias sudo="sudo "
 alias view="nvim -R"
 alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
-projcd() {
+alias cddot="cd ~/.dotfiles"
+alias srczsh="source ~/.zshrc"
+cdproj() {
     cd ~/Documents/projects/$1
 }
 
@@ -123,10 +126,3 @@ function cd {
 #export PATH="/usr/local/opt/ruby/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-export JFROG_CLI_OFFER_CONFIG=false
-export ARTIFACTORY_USERNAME=${USER}
-export ARTIFACTORY_PASSWORD=$(security find-generic-password -ga ${ARTIFACTORY_USERNAME} -s artifactory 2>&1 | grep ^password | awk -F'"' '{print $2}')
-export ARTIFACTORY_URL=https://artifactory.dev.teslamotors.com/artifactory
-
-export AWS_ACCESS_KEY_ID=AK0NSCNWCAAD30QP1KQA
-export AWS_SECRET_ACCESS_KEY=xRpSar4GlPCul8czMchp4/4YhTzl3zXpuK115c4Y
