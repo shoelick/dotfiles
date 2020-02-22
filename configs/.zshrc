@@ -111,6 +111,7 @@ cdproj() {
 #export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 #eval "$(pyenv init -)"
 export PATH=$HOME/go/bin:/usr/local/go/bin:$PATH
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
 function cd {
     builtin cd "$@" && ls

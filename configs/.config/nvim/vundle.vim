@@ -20,8 +20,8 @@ Plugin 'vim-gitgutter'
 " Completion & snippets
 Plugin 'Valloric/YouCompleteMe'
 "Plugin 'rdnetto/YCM-Generator'
-"Plugin 'SirVer/ultisnips'
-"Plugin 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " Syntax
 Plugin 'alisdair/vim-armasm'
@@ -85,9 +85,14 @@ call vundle#end()
 " ========================================
 
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsListSnippets = "<C-l>"
+let g:UltiSnipsExpandTrigger = "<C-h>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
+let g:snips_author = $USER
 
 " vim-jsx settings
 let g:jsx_ext_required = 0
@@ -126,7 +131,7 @@ map <C-n> :NERDTreeToggle<CR>
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"
 let g:go_metalinter_autosave = 1
-let g:go_def_mode='gopls'
+let g:go_def_mode='godef'
 let g:go_info_mode='gopls'
 
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
