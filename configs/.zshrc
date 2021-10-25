@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$PATH:/usr/local/bin
+#export PATH=$PATH:/usr/local/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -77,7 +77,7 @@ source $ZSH/oh-my-zsh.sh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Default user -- causes username to be hidden in PS1
-export DEFAULT_USER='mshullick'
+export DEFAULT_USER='michael'
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -110,8 +110,8 @@ cdproj() {
 #export PATH=${PATH}:${ANDROID_HOME}/tools
 #export PATH=${PATH}:${ANDROID_HOME}/platform-tools
 #eval "$(pyenv init -)"
-export PATH=$HOME/go/bin:/usr/local/go/bin:$PATH
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+#export PATH=$HOME/go/bin:/usr/local/go/bin:$PATH
+#export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
 function cd {
     builtin cd "$@" && ls
@@ -125,5 +125,7 @@ function cd {
 #source /opt/ros/melodic/setup.zsh
 #source ${HOME}/Documents/catkin_ws/devel/setup.zsh
 #export PATH="/usr/local/opt/ruby/bin:$PATH"
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+#if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+#export CPLUS_INCLUDE_PATH=/usr/local/include
+#export LIBRARY_PATH=/usr/local/lib

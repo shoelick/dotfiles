@@ -40,7 +40,7 @@ main() {
     # Install necessary dependencies
     git clone https://github.com/VundleVim/Vundle.vim.git \
         ~/.config/nvim/bundle/vundle
-    echo "Don't forget to install neovim and run :PluginInstall"
+    nvim +PluginInstall +qall
 
     #
     # Configuration
