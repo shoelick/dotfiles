@@ -13,7 +13,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Generic
 Plugin 'itchyny/lightline.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'vim-gitgutter'
+Plugin 'airblade/vim-gitgutter'
 
 "Plugin 'unblevable/quick-scope'
 
