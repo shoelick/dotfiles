@@ -32,13 +32,17 @@ Plugin 'mxw/vim-jsx'
 "Plugin 'cakebaker/scss-syntax.vim'
 "Plugin 'Valloric/MatchTagAlways'
 
+" Python smart formatting
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'nvie/vim-flake8'
+
 " Colorscheme
 Plugin 'ajmwagar/vim-deus'
 Plugin 'ajmwagar/lightline-deus' " Matching color scheme
 
 " Linting
-" Plugin 'scrooloose/syntastic'
-Plugin 'w0rp/ale'
+Plugin 'scrooloose/syntastic'
+"Plugin 'w0rp/ale'
 
 " File exploring
 Plugin 'scrooloose/nerdtree'
@@ -75,7 +79,6 @@ Plugin 'craigemery/vim-autotag'
 
 " Show open buffers
 Plugin 'bling/vim-bufferline'
-
 
 
 call vundle#end()

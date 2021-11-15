@@ -54,8 +54,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux)
 
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -85,10 +83,7 @@ export DEFAULT_USER='michael'
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 [[ ! -z $(which nvim) ]] && alias vim="nvim" && alias view="nvim -R"
-alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
 
@@ -102,30 +97,16 @@ alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias cddot="cd ~/.dotfiles"
 alias srczsh="source ~/.zshrc"
 cdproj() {
-    cd ~/Documents/projects/$1
+    cd ~/Documents/real_new_docs/git_repos/$1
 }
-
-# android development
-#export ANDROID_HOME=~/Library/Android/sdk
-#export PATH=${PATH}:${ANDROID_HOME}/tools
-#export PATH=${PATH}:${ANDROID_HOME}/platform-tools
-#eval "$(pyenv init -)"
-#export PATH=$HOME/go/bin:/usr/local/go/bin:$PATH
-#export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
 function cd {
     builtin cd "$@" && ls
 }
 
-# export PATH=/usr/local/anaconda3/bin:"$PATH"
+alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
+alias zshedit="vim -O ~/.zshrc ~/.zshlocalrc"
+alias source_zsh="source ~/.zshrc"
 
-# ROS environment variables
-
-#export PATH=${PATH}:${HOME}/.local/bin
-#source /opt/ros/melodic/setup.zsh
-#source ${HOME}/Documents/catkin_ws/devel/setup.zsh
-#export PATH="/usr/local/opt/ruby/bin:$PATH"
-#if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-#export CPLUS_INCLUDE_PATH=/usr/local/include
-#export LIBRARY_PATH=/usr/local/lib
+# Do these at the end to support custom setup
+source $ZSH/oh-my-zsh.sh

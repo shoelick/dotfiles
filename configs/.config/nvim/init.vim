@@ -11,7 +11,6 @@ filetype plugin indent on
 
 " Non-vundle related config
 
-syntax on
 set number                      "Line numbers are good
 set title                       "Titles are cool
 
@@ -62,6 +61,9 @@ set cursorcolumn
 """"""""""""""""""""""""""""""""""""""""""""""""" COLORS
 colorscheme deus
 
+let python_highlight_all=1
+syntax on
+
 """"""""""""""""""""""""""""""""""""""""""""""""" BOTTOM BAR
 " lightline
 set laststatus=2 " no display fix
@@ -78,6 +80,7 @@ let g:lightline = {
             \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""" OTHER
+set encoding=utf-8
 
 " Undo
 if has('persistent_undo')
@@ -170,3 +173,17 @@ set mmp=5000
 "                \ set eventignore-=FileType |
 "                \ endif
 "augroup END
+"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" Python
+"
+au BufNewFile,BufRead *.py
+    \ setlocal tabstop=4
+    \ | setlocal softtabstop=4
+    \ | setlocal shiftwidth=4
+    \ | setlocal textwidth=79
+    \ | setlocal expandtab
+    \ | setlocal autoindent
+    \ | setlocal fileformat=unix
+
+
