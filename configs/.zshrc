@@ -97,7 +97,7 @@ alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias cddot="cd ~/.dotfiles"
 alias srczsh="source ~/.zshrc"
 cdproj() {
-    cd ~/Documents/real_new_docs/git_repos/$1
+    cd ~/Documents/git_repos/$1
 }
 
 function cd {
