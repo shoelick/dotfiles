@@ -18,7 +18,7 @@ Plugin 'airblade/vim-gitgutter'
 "Plugin 'unblevable/quick-scope'
 
 " Completion & snippets
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 "Plugin 'rdnetto/YCM-Generator'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
