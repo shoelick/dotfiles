@@ -87,7 +87,6 @@ export DEFAULT_USER='michael'
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
 
-[[ -e $HOME/.zshlocalrc ]] && source $HOME/.zshlocalrc
 
 # Make bash evaluate aliases after sudo
 # See AskUbuntu post here: <http://tinyurl.com/6azvksf>
@@ -104,9 +103,12 @@ function cd {
     builtin cd "$@" && ls
 }
 
+[[ -e $HOME/.zshlocalrc ]] && source $HOME/.zshlocalrc
+
 alias nvimedit="vim -O ~/.config/nvim/init.vim ~/.config/nvim/vundle.vim"
 alias zshedit="vim -O ~/.zshrc ~/.zshlocalrc"
 alias source_zsh="source ~/.zshrc"
+
 
 # Do these at the end to support custom setup
 source $ZSH/oh-my-zsh.sh

@@ -26,9 +26,10 @@ Plugin 'honza/vim-snippets'
 " Syntax
 Plugin 'alisdair/vim-armasm'
 "Plugin 'pangloss/vim-javascript'
+Plugin 'chemzqm/vim-jsx-improve'
 Plugin 'mxw/vim-jsx'
 "Plugin 'othree/html5.vim'
-"Plugin 'hail2u/vim-css3-syntax'
+Plugin 'hail2u/vim-css3-syntax'
 "Plugin 'cakebaker/scss-syntax.vim'
 "Plugin 'Valloric/MatchTagAlways'
 
@@ -70,6 +71,9 @@ Plugin 'vim-scripts/taglist.vim'
 
 " Extra support for Golang
 Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+let g:go_jump_to_error = 0
+let g:go_metalinter_autosave = 1
+let g:go_auto_sameids = 0
 
 " Automatically update tag files
 Plugin 'craigemery/vim-autotag'

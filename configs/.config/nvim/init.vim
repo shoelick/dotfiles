@@ -21,8 +21,8 @@ set showcmd                     "Show incomplete :cmds down the bottom
 set visualbell                  "No sounds
 set noerrorbells                "Removes error bells
 set autoread                    "Reload files changed outside vim
-set autoindent                  "Copy the previous line's indentation
-set smartindent                 "Automatically add indent to new scopes
+"set autoindent                  "Copy the previous line's indentation
+"set smartindent                 "Automatically add indent to new scopes
 set smarttab                    "Inserts tabs according to shiftwidth
 set hlsearch                    "Highlights search results
 set incsearch                   "Includes partial searches
