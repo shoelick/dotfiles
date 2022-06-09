@@ -40,8 +40,10 @@ set ignorecase
 "Hide buffer instead of closing it. Also disable buffering of empty files
 set hidden
 
-" Tabs to spaces
+" Default to four spaces/tab for all files
 set tabstop=4 shiftwidth=4 expandtab
+" ... With the exception of javascript: use two spaces.
+autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 expandtab
 
 " Delete trailing whitespaces on file write
 autocmd BufWritePre * %s/\s\+$//e
