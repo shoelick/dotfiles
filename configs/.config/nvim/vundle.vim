@@ -25,9 +25,9 @@ Plugin 'honza/vim-snippets'
 
 " Syntax
 Plugin 'alisdair/vim-armasm'
-"Plugin 'pangloss/vim-javascript'
+Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
-"Plugin 'othree/html5.vim'
+Plugin 'othree/html5.vim'
 "Plugin 'hail2u/vim-css3-syntax'
 "Plugin 'cakebaker/scss-syntax.vim'
 "Plugin 'Valloric/MatchTagAlways'
