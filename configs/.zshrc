@@ -83,7 +83,7 @@ export DEFAULT_USER='michael'
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-[[ ! -z $(which nvim) ]] && alias vim="nvim" && alias view="nvim -R"
+#[[ ! -z $(which nvim) ]] && alias vim="nvim" && alias view="nvim -R"
 alias shoefiles="~/.dotfiles/shoefiles"
 alias tmux=" tmux -u"
 
