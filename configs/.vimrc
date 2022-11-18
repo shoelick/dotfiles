@@ -28,8 +28,12 @@ set undolevels=1000                   "Undo history
 set udf                               "Persistant undo across sessions
 set scrolloff=4                       "Makes cursor stay 8 lines away from screen edge
 set tabstop=4 shiftwidth=4 expandtab  "Tabs to spaces
-nnoremap <tab> :bnext<cr>             "Tab to next buffer
-nnoremap <s-tab> :bprevious<cr>       "Shift-tab to previous buffer
+
+"Tab to next buffer
+nnoremap <tab> :bnext<cr>             
+
+"Shift-tab to previous buffer
+nnoremap <s-tab> :bprevious<cr>       
 
 " Matching parentheses
 hi MatchParen cterm=bold ctermbg=none ctermfg=34
