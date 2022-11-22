@@ -41,8 +41,8 @@ Plugin 'ajmwagar/lightline-deus' " Matching color scheme
 "Plugin 'w0rp/ale'
 
 " File exploring
-"Plugin 'scrooloose/nerdtree'
-"Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 
 " Load LaTeX if installed
 "if filereadable(expand("~/.config/nvim/latex.vim"))
@@ -85,4 +85,11 @@ filetype plugin indent on
 " Plugin configuration
 " ========================================
 
-" ...
+
+" nerdtree
+let NERDTreeShowHidden=1
+let NERDTreeSortOrder=['[\/]$', '*']
+let NERDTreeIgnore=['.*\.swp$', '.*\.swo$',]
+
+" Open Nerdtree with ctrl n
+map <C-n> :NERDTreeToggle<CR>
