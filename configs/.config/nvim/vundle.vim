@@ -41,7 +41,7 @@ Plugin 'ajmwagar/vim-deus'
 Plugin 'ajmwagar/lightline-deus' " Matching color scheme
 
 " Linting
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 "Plugin 'w0rp/ale'
 
 " File exploring
