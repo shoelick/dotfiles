@@ -1,7 +1,7 @@
 
-if filereadable(expand("~/.plugins.vim"))
-     source ~/.plugins.vim
-endif
+"if filereadable(expand("~/.plugins.vim"))
+"     source ~/.plugins.vim
+"endif
 
 syntax on                             "Enable syntax highlighting
 set number                            "Line numbers are good
@@ -30,10 +30,10 @@ set scrolloff=4                       "Makes cursor stay 8 lines away from scree
 set tabstop=4 shiftwidth=4 expandtab  "Tabs to spaces
 
 "Tab to next buffer
-nnoremap <tab> :bnext<cr>             
+nnoremap <tab> :bnext<cr>
 
 "Shift-tab to previous buffer
-nnoremap <s-tab> :bprevious<cr>       
+nnoremap <s-tab> :bprevious<cr>
 
 " Matching parentheses
 hi MatchParen cterm=bold ctermbg=none ctermfg=34
