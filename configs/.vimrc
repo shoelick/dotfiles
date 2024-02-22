@@ -1,7 +1,7 @@
 
-"if filereadable(expand("~/.plugins.vim"))
-"     source ~/.plugins.vim
-"endif
+if filereadable(expand("~/.plugins.vim"))
+     source ~/.plugins.vim
+endif
 
 syntax on                             "Enable syntax highlighting
 set number                            "Line numbers are good
