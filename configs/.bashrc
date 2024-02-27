@@ -131,10 +131,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# If there's a local bashrc, source that
+[[ -e $HOME/.bashlocalrc ]] && source $HOME/.bashlocalrc
 
-eval $(cat /etc/profile.d/cuda.sh)
-
-export EDITOR=vim

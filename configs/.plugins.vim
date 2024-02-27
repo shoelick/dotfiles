@@ -31,6 +31,7 @@ Plugin 'airblade/vim-gitgutter'
 " Python smart formatting
 "Plugin 'vim-scripts/indentpython.vim'
 "Plugin 'nvie/vim-flake8'
+Plugin 'davidhalter/jedi-vim'
 
 " Colorscheme
 Plugin 'ajmwagar/vim-deus'
