@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# .zshlocalrc
-# Put in this file variables or other configuration that you would like to have sourced
-# but not versioned with shoefiles.
-#
-

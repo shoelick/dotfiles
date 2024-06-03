@@ -7,7 +7,7 @@
 main() {
 
     echo "Shoelick Dotfiles"
-    echo "Updated Dec '17"
+    echo "Updated June '24"
 
     # Set to 1 for debugging argument parsing or earlier
     # Otherwise use -v for debugging
@@ -21,8 +21,6 @@ main() {
 
     AreArgsValid "$@"
 
-    prereqs_installed && exit 1
-
     #
     # Move dotfiles to final location
     #
@@ -34,10 +32,26 @@ main() {
 
     [ -z $PREFIX ] && PREFIX=$HOME;
 
+    # Try to install platform dependencies
+    #export PLATFORM_INSTALLER="$DOTFILES_DIR/platform_installers/$(uname).sh";
+    export PLATFORM_INSTALLER="$DOTFILES_DIR/platform_installers/penish.sh";
+    if [ -f "$PLATFORM_INSTALLER" ]; then
+        . $PLATFORM_INSTALLER
+    else
+        echo "No dependencies installer for platform \"$(uname)\" found."
+        cat << EOF
+The following dependencies are expected:
+- NVIM
+- A recent version of git
+- tmux
+EOF
+        [[ $(BoolPrompt "Continue?") -eq 0 ]] && exit
+    fi
+
     # Grab all configs and link them
     InstallDir "$DOTFILES_DIR/configs" $PREFIX;
 
-    # Install necessary dependencies
+    # Install Vundle for neovim
     git clone https://github.com/VundleVim/Vundle.vim.git \
         ~/.config/nvim/bundle/vundle
     nvim +PluginInstall +qall
@@ -53,7 +67,6 @@ main() {
     GIT_EMAIL="$(git config --global user.email)"
     Debug "Git email is: $GIT_EMAIL"
     if [ -z "$GIT_EMAIL" ]; then
-
         Debug "git email not set"
         EMAIL=$(EmailPrompt "Enter a valid email: ")
         Debug "Email is: $EMAIL"
@@ -72,17 +85,13 @@ main() {
 
     git config --global core.editor "vim"
 
-    # Create a local ZSH config for things we don't want to have versioned
-    cp $DOTFILES_DIR/zsh_localrc ~/.zshlocalrc
+    # Create a local bash config for things we don't want to have versioned
+    # This one is outside the usual configs/ because we don't want changes
+    # across machines versioned
+    cp $DOTFILES_DIR/bashlocalrc ~/.bashlocalrc
 
     echo "Done."
     return $RetVal
-
-    # Perfom modification to agnoster theme
-    # Changes PS1 to show up to 3 directories up from pwd
-    # The single '' after -i makes the command macOS-safe
-    #sed -i '' -e "s/blue black '%\~'/blue black '%3\~'/g" \
-    #    "${HOME}/.oh-my-zsh/themes/agnoster.zsh-theme" 2>/dev/null
 }
 
 main $@

@@ -279,13 +279,6 @@ InstallFiles() {
 
 prereqs_installed() {
 
-    cat << EOF
-Are all of the following installed?
-- NVIM
-- zsh & oh-my-zsh
-- ctags (exuberant)
-EOF
-
     return $(BoolPrompt)
 
 }

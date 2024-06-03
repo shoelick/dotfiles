@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# .bashlocalrc
+# Put in this file variables or other configuration that you would like to have sourced
+# but not versioned with shoefiles.
+
+if [ "$(uname)" == "Darwin" ]; then
+    # On newer Macs, silence a warning about ZSH being the new default shell
+    export BASH_SILENCE_DEPRECATION_WARNING=1
+    # Opt out of homebrew analytics collection
+    export HOMEBREW_NO_ANALYTICS=1
+    # Add to path
+    export PATH=/opt/homebrew/bin:$PATH
+
+    ### AUTO COMPLETION ###
+    [ -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ] && . $(brew --prefix)/etc/bash_completion.d/git-completion.bash
+    [ -f "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh" ] && . $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+fi
+
