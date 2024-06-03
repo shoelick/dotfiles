@@ -1,10 +1,8 @@
 # Shoefiles
 
-[![Build Status](https://travis-ci.com/shoelick/dotfiles.svg?branch=master)](https://travis-ci.com/shoelick/dotfiles)
-
 ## Intro
 
-A collection of customizations for programs that use the ~/.configrc convention.
+A collection of customizations for programs that use the ~/.configrc convention and a script to put them in place.
 
 Essentially, configs is a psuedo-home directory. The scripts move the dotfiles
 repo to `~/.dotfiles` create and link the corresponding files in the home
