@@ -1,7 +1,9 @@
-<<<<<<< HEAD
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bash_profile: executed by interactive login shells
+# Executes bashrc below
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
+
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -48,6 +50,8 @@ export GREP_COLOR='1;32'
 export CLICOLOR='1'
 
 alias ls='ls -G'  # OS-X SPECIFIC - the -G command in OS-X is for colors, in Linux it's no groups
+alias ll='ls -al'
+alias la='ls -a'
 export LSCOLORS="gxDxFxdxCxExExhbadgxgx"
 
 ### GIT ALIASES ###
@@ -81,7 +85,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-shopt -s globstar
+#shopt -s globstar
 
 # Number of lines to keep in the history file
 HISTSIZE=1000000
